@@ -1,0 +1,40 @@
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+56   [ActiveMQ Transport: tcp://localhost/127.0.0.1:61616@6424] (FailoverTransport.java:251) WARN  org.apache.activemq.transport.failover.FailoverTransport  - Transport (tcp://127.0.0.1:61616) failed, reason:  java.io.EOFException, not attempting to automatically reconnect
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+55   [ActiveMQ Transport: tcp://localhost/127.0.0.1:61616@6428] (FailoverTransport.java:251) WARN  org.apache.activemq.transport.failover.FailoverTransport  - Transport (tcp://127.0.0.1:61616) failed, reason:  java.io.EOFException, not attempting to automatically reconnect
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+1    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+276  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+116  [ActiveMQ Transport: tcp://localhost/127.0.0.1:61616@7295] (FailoverTransport.java:251) WARN  org.apache.activemq.transport.failover.FailoverTransport  - Transport (tcp://127.0.0.1:61616) failed, reason:  java.io.EOFException, not attempting to automatically reconnect
+296  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+280  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+281  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+84665 [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+281  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+889  [ActiveMQ Transport: tcp://localhost/127.0.0.1:61616@7843] (FailoverTransport.java:251) WARN  org.apache.activemq.transport.failover.FailoverTransport  - Transport (tcp://127.0.0.1:61616) failed, reason:  java.io.EOFException, not attempting to automatically reconnect
+90427 [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+127408 [pool-1-thread-1] (JavaUtils.java:1308) WARN  org.apache.axis.utils.JavaUtils  - Unable to find required classes (javax.activation.DataHandler and javax.mail.internet.MimeMultipart). Attachment support is disabled.
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+268  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+324  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+3092 [pool-1-thread-1] (JavaUtils.java:1308) WARN  org.apache.axis.utils.JavaUtils  - Unable to find required classes (javax.activation.DataHandler and javax.mail.internet.MimeMultipart). Attachment support is disabled.
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+78   [ActiveMQ Transport: tcp://localhost/127.0.0.1:61616@6140] (FailoverTransport.java:251) WARN  org.apache.activemq.transport.failover.FailoverTransport  - Transport (tcp://127.0.0.1:61616) failed, reason:  java.io.EOFException, not attempting to automatically reconnect
+288  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+912  [pool-1-thread-1] (JavaUtils.java:1308) WARN  org.apache.axis.utils.JavaUtils  - Unable to find required classes (javax.activation.DataHandler and javax.mail.internet.MimeMultipart). Attachment support is disabled.
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+72   [ActiveMQ Transport: tcp://localhost/127.0.0.1:61616@6155] (FailoverTransport.java:251) WARN  org.apache.activemq.transport.failover.FailoverTransport  - Transport (tcp://127.0.0.1:61616) failed, reason:  java.io.EOFException, not attempting to automatically reconnect
+330  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+924  [pool-1-thread-1] (JavaUtils.java:1308) WARN  org.apache.axis.utils.JavaUtils  - Unable to find required classes (javax.activation.DataHandler and javax.mail.internet.MimeMultipart). Attachment support is disabled.
+0    [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+280  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+873  [pool-1-thread-1] (JavaUtils.java:1308) WARN  org.apache.axis.utils.JavaUtils  - Unable to find required classes (javax.activation.DataHandler and javax.mail.internet.MimeMultipart). Attachment support is disabled.
+312  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+280  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+281  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+297  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
+281  [ActiveMQ Task-1] (FailoverTransport.java:1040) INFO  org.apache.activemq.transport.failover.FailoverTransport  - Successfully connected to tcp://localhost:61616
