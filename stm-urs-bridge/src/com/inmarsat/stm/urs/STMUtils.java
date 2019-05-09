@@ -9,7 +9,7 @@ import java.util.TimeZone;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
-public class FREUtils {
+public class STMUtils {
 	
     //private static transient final Logger logger = LoggerFactory.getLogger(FREUtils.class);
 
@@ -20,7 +20,7 @@ public class FREUtils {
      * @return
      */
     public static java.sql.Date getCurrentDate() {
-    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(FREConstants.TimeZone));
+    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(STMConstants.TimeZone));
     	Long t = cal.getTimeInMillis();
     	return new java.sql.Date(t);
     	
@@ -34,7 +34,7 @@ public class FREUtils {
      * @return
      */
     public static Long getCurrentTime() {
-    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(FREConstants.TimeZone));
+    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(STMConstants.TimeZone));
     	return cal.getTimeInMillis();
     }
     

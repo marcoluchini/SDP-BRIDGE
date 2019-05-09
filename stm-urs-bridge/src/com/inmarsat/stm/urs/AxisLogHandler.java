@@ -14,7 +14,8 @@ import org.apache.axis.utils.Messages;
 
 public class AxisLogHandler extends BasicHandler {
  private static final long serialVersionUID = 1L;
- @Override public void invoke(MessageContext msgContext) throws AxisFault {
+ 
+@Override public void invoke(MessageContext msgContext) throws AxisFault {
 try {
 logMessage(msgContext);
  } catch (Exception e) {
@@ -49,13 +50,21 @@ Name name = soapEnv.createName("username", "svsec", "http://services.sandvine.co
 SOAPHeaderElement soapHeaderElement = soapHeader.addHeaderElement(name);
 //
 ////soapHeaderElement.setActor(SOAPConstants.URI_SOAP_ACTOR_NEXT);
-soapHeaderElement.addTextNode(FREConstants.spbuser);
+if (STMConstants.currAccessNetwork == 2 ) {
+	soapHeaderElement.addTextNode(STMConstants.spbuser2);
+} else {
+	soapHeaderElement.addTextNode(STMConstants.spbuser);
+};
 
 Name name2 = soapEnv.createName("password", "svsec", "http://services.sandvine.com");
 SOAPHeaderElement soapHeaderElement2 = soapHeader.addHeaderElement(name2);
 //
 ////soapHeaderElement.setActor(SOAPConstants.URI_SOAP_ACTOR_NEXT);
-soapHeaderElement2.addTextNode(FREConstants.spbpasswd);
+if (STMConstants.currAccessNetwork == 2 ) {
+	soapHeaderElement2.addTextNode(STMConstants.spbpasswd2);
+} else {
+	soapHeaderElement2.addTextNode(STMConstants.spbpasswd);
+}
 soapMsg.saveChanges();
 System.out.println("============================= REQUEST ============================================");
 System.out.println(Messages.getMessage("inMsg00", (inMsg == null ? "" : inMsg.getSOAPEnvelope().getAsString())));

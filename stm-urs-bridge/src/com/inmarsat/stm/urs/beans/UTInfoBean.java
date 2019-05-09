@@ -3,8 +3,8 @@ package com.inmarsat.stm.urs.beans;
 import java.sql.Date;
 
 import com.inmarsat.stm.urs.DBUtils;
-import com.inmarsat.stm.urs.FREConstants;
-import com.inmarsat.stm.urs.FREUtils;
+import com.inmarsat.stm.urs.STMConstants;
+import com.inmarsat.stm.urs.STMUtils;
 
 public class UTInfoBean implements java.io.Serializable {
 
@@ -28,13 +28,13 @@ public class UTInfoBean implements java.io.Serializable {
 	public UTInfoBean(Long imsi, int sac) {
 		this.imsi = imsi;
 		this.sac = sac;
-		this.date = FREUtils.getCurrentDate();		
+		this.date = STMUtils.getCurrentDate();		
 	}
 	
 	public UTInfoBean(Long imsi, int sac, Long capture, int accessnetwork, double latitude, double longitude, Integer beamId, String satelliteId) {
 		this.imsi = imsi;
 		this.sac = sac;
-		this.date = FREUtils.getCurrentDate();
+		this.date = STMUtils.getCurrentDate();
 		this.capture = capture; 
 		this.accessnetwork = accessnetwork;
 		this.latitude = latitude;
@@ -46,7 +46,7 @@ public class UTInfoBean implements java.io.Serializable {
 	public UTInfoBean(Long imsi, int sac, Long milliSeconds) {
 		this.imsi = imsi;
 		this.sac = sac;
-		this.date = FREUtils.getDate(milliSeconds);
+		this.date = STMUtils.getDate(milliSeconds);
 	}
 	
 	public String toString() {
@@ -130,12 +130,12 @@ public class UTInfoBean implements java.io.Serializable {
 //	}
 
 	public String getDateAsSQLDateString() {
-		return DBUtils.toOracleDateString(capture, FREConstants.gpsMessageTimeUnit);
+		return DBUtils.toOracleDateString(capture, STMConstants.gpsMessageTimeUnit);
 	}
 
 	
 	public void setDate(Long capture) {
-		date = FREUtils.getDate(capture);
+		date = STMUtils.getDate(capture);
 	}
 
 	/**

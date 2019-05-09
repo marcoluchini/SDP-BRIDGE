@@ -96,7 +96,7 @@ public class GPSRecordParser {
 		}
 		
 		UTInfoBean bean = new UTInfoBean(imsi, sac, capture, accessnetwork, latitude, longitude, beamId, satelliteId); //default: status = 0, date = now
-		bean.setCapture(capture, FREConstants.gpsMessageTimeUnit);
+		bean.setCapture(capture, STMConstants.gpsMessageTimeUnit);
 		//bean.setDate(capture);
 
 		logger.info("Parsed JSON - IMSI: {}; SAC: {}, Latitude: {}, {}, Longitude: {}, {}, Capture: {}, beamid {}, satelliteid {}", new Object[] {imsi, sac, latitude, sense1, longitude, sense2, capture, beamId, satelliteId});

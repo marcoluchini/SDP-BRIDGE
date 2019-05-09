@@ -84,7 +84,7 @@ public class PostToSPBTable {
 
 		} catch (SQLException e) {
 			logger.error("Couldn't complete update: {}", sql);
-			logger.error(FREUtils.printSQLException(e));
+			logger.error(STMUtils.printSQLException(e));
 			e.printStackTrace();
 			return false;
 		} finally {
@@ -93,7 +93,7 @@ public class PostToSPBTable {
 				DBUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}
 
@@ -102,10 +102,15 @@ public class PostToSPBTable {
 	
 		public boolean Post(UTInfoBean currUTInfo) {
 
-		SimpleProvider clientConfig = configureAxisLogger();
+		SimpleProvider clientConfig = configureAxisLogger ();
 
 		try {
-			URL newLocation = new URL(FREConstants.spburl);
+			URL newLocation;
+			if ( currUTInfo.getAccessnetwork() == 3 ) {
+				newLocation = new URL(STMConstants.spburl );
+			} else {
+				newLocation = new URL(STMConstants.spburl2 );
+			};
 			SubscriberServices_ServiceLocator locator = new SubscriberServices_ServiceLocator();
 			SubscriberServices_PortType subscriberServicesPort = locator.getSubscriberServicesPort(newLocation);
 			// SubscriberServices_PortType subscriberServicesPort =

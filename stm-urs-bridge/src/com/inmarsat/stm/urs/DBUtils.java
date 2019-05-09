@@ -56,14 +56,14 @@ public class DBUtils {
 		} catch (SQLException sqlEx) {
 			logger.error("Couldn't complete: {}", sql);
 			logger.error("Rows effected: {}", rows);
-			logger.error(FREUtils.printSQLException(sqlEx));
+			logger.error(STMUtils.printSQLException(sqlEx));
 			return false;
 		} catch (Exception ex) {
 
 			logger.error("Couldn't complete: {}", sql);
 			logger.error("Rows effected: {}", rows);
 			logger.error("Stack Trace: {}",
-			FREUtils.getStackString(ex.getStackTrace()));
+			STMUtils.getStackString(ex.getStackTrace()));
 			return false;
 
 		} finally {
@@ -72,7 +72,7 @@ public class DBUtils {
 				DBUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}
 	}
@@ -98,14 +98,14 @@ public class DBUtils {
 		} catch (SQLException sqlEx) {
 			logger.error("Couldn't complete: {}", sql);
 			logger.error("Rows effected: {}", rows);
-			logger.error(FREUtils.printSQLException(sqlEx));
+			logger.error(STMUtils.printSQLException(sqlEx));
 			return false;
 		} catch (Exception ex) {
 
 			logger.error("Couldn't complete: {}", sql);
 			logger.error("Rows effected: {}", rows);
 			logger.error("Stack Trace: {}",
-			FREUtils.getStackString(ex.getStackTrace()));
+			STMUtils.getStackString(ex.getStackTrace()));
 			return false;
 
 		} finally {
@@ -114,7 +114,7 @@ public class DBUtils {
 				DBUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}
 	}
@@ -135,13 +135,13 @@ public class DBUtils {
 			return rset;
 		} catch (SQLException sqlEx) {
 			logger.error("Couldn't complete: {}", sql);
-			logger.error(FREUtils.printSQLException(sqlEx));
+			logger.error(STMUtils.printSQLException(sqlEx));
 		} catch (Exception ex) {
 
 			logger.error("Couldn't complete: {}", sql);
 			logger.error("Error: ", ex);
 			logger.error("Stack Trace: {}",
-			FREUtils.getStackString(ex.getStackTrace()));
+			STMUtils.getStackString(ex.getStackTrace()));
 		} finally {
 			try {
 				//Connection closing must be handled by calling function (because of ResultSet)
@@ -149,7 +149,7 @@ public class DBUtils {
 				//DbUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}
 		return rset;
@@ -174,7 +174,7 @@ public class DBUtils {
 	}
 	
 	public static String getDateAsSQLDateString(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(FREConstants.dateFormatString_javaUtil);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(STMConstants.dateFormatString_javaUtil);
 		return (dateFormat.format(date));
 	}
 	

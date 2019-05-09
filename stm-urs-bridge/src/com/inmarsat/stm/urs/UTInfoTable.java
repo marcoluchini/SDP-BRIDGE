@@ -54,13 +54,13 @@ public class UTInfoTable {
 
 		} catch (SQLException sqlEx) {
 			logger.error("Couldn't complete update: {}", sql);
-			logger.error(FREUtils.printSQLException(sqlEx));
+			logger.error(STMUtils.printSQLException(sqlEx));
 			return false;
 		} catch (Exception ex) {
 
 			logger.error("Couldn't complete update: {}", sql);
 			logger.error("Stack Trace: {}",
-					FREUtils.getStackString(ex.getStackTrace()));
+					STMUtils.getStackString(ex.getStackTrace()));
 			return false;
 
 		} finally {
@@ -70,7 +70,7 @@ public class UTInfoTable {
 				DBUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class UTInfoTable {
 			cstmt.setLong(2, entry.getCapture());
 			cstmt.setDouble(3, entry.getLatitude());
 			cstmt.setDouble(4, entry.getLongitude());
-			cstmt.setString(5, FREUtils.stringToTbcd(entry.getImsiAsString()));
+			cstmt.setString(5, STMUtils.stringToTbcd(entry.getImsiAsString()));
 	
 			cstmt.execute();
 			
@@ -101,7 +101,7 @@ public class UTInfoTable {
 			
 		} catch (SQLException e) {
 			logger.error("Couldn't complete update: {}", sql);
-			logger.error(FREUtils.printSQLException(e));
+			logger.error(STMUtils.printSQLException(e));
 			e.printStackTrace();
 			return 0;
 		} finally {
@@ -110,7 +110,7 @@ public class UTInfoTable {
 				DBUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}
 		
@@ -148,13 +148,13 @@ public class UTInfoTable {
 
 		} catch (SQLException sqlEx) {
 			logger.error("Couldn't complete update: {}", sql);
-			logger.error(FREUtils.printSQLException(sqlEx));
+			logger.error(STMUtils.printSQLException(sqlEx));
 			return null;
 		} catch (Exception ex) {
 
 			logger.error("Couldn't complete update: {}", sql);
 			logger.error("Stack Trace: {}",
-					FREUtils.getStackString(ex.getStackTrace()));
+					STMUtils.getStackString(ex.getStackTrace()));
 			return null;
 
 		} finally {
@@ -164,7 +164,7 @@ public class UTInfoTable {
 				DBUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}
 	}

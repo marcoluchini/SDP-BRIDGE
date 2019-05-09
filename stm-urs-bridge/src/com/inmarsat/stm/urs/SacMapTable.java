@@ -56,13 +56,13 @@ public class SacMapTable {
 
 		} catch (SQLException sqlEx) {
 			logger.error("Couldn't complete select: {}", sql);
-			logger.error(FREUtils.printSQLException(sqlEx));
+			logger.error(STMUtils.printSQLException(sqlEx));
 			return false;
 		} catch (Exception ex) {
 
 			logger.error("Couldn't complete select: {}", sql);
 			logger.error("Stack Trace: {}",
-			FREUtils.getStackString(ex.getStackTrace()));
+			STMUtils.getStackString(ex.getStackTrace()));
 			return false;
 
 		} finally {
@@ -72,7 +72,7 @@ public class SacMapTable {
 				DBUtils.close(conn);
 			} catch (Exception conEX) {
 				logger.error("Couldn't close db connection.");
-				logger.error(FREUtils.getStackString(conEX.getStackTrace()));
+				logger.error(STMUtils.getStackString(conEX.getStackTrace()));
 			}
 		}			
 	}

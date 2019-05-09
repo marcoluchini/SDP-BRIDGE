@@ -33,9 +33,12 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 	private String spburl = "http://localhost:8081/SubscriberServices/SubscriberServices";
 	private String spbusername = "sv_admin";
 	private String spbpasswd = "sandvine";
+	private String spburl2 = "http://localhost:8081/SubscriberServices/SubscriberServices";
+	private String spbusername2 = "sv_admin";
+	private String spbpasswd2 = "sandvine";
 	private Integer targetType = 2;
 
-	public GPSRecordConsumerThread(String url, String subject, String username, String passwd, Long receiverTimeout, String spbusername, String spbpasswd, String spburl, Integer targetType ) {
+	public GPSRecordConsumerThread(String url, String subject, String username, String passwd, Long receiverTimeout, String spbusername, String spbpasswd, String spburl, String spbusername2, String spbpasswd2, String spburl2, Integer targetType ) {
 		this.url = url;
 		this.subject = subject;
 		this.username = username;
@@ -44,6 +47,9 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		this.spburl = spburl;
 		this.spbusername = spbusername;
 		this.spbpasswd = spbpasswd;
+		this.spburl2 = spburl2;
+		this.spbusername2 = spbusername2;
+		this.spbpasswd2 = spbpasswd2;
 		this.targetType = targetType;
 		
 	}
@@ -78,13 +84,13 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				if (message != null) {
 					freActDone = false;
 					Long messageTime = process(message, messageString);
-					Long now = FREUtils.getCurrentTime(); //new Date().getTime(); //TODO: could use Calendar? 
+					Long now = STMUtils.getCurrentTime(); //new Date().getTime(); //TODO: could use Calendar? 
 					logger.debug("now({}) -- messageTime({})", new Object[] { now.toString(), messageTime.toString() });
 					if(messageTime <= 0)
 					{
 						logger.debug("Received negative time error signal, ignoring message.");
 					}
-					else if (now - messageTime < FREConstants.frexitProcessDelta) {
+					else if (now - messageTime < STMConstants.frexitProcessDelta) {
 						logger.info("Processing FRExit_Actions");
 						if(processFRExitActions())
 							freActDone = true;
@@ -101,17 +107,17 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			}
 		} catch (JMSException jms) {
 			logger.error("JMS Error: {}", jms.getErrorCode());
-			logger.error("Stack Trace: {}", FREUtils.getStackString(jms.getStackTrace()));
+			logger.error("Stack Trace: {}", STMUtils.getStackString(jms.getStackTrace()));
 
 		} catch (JsonParseException e) {
 			logger.error("Couldn't parse message string: {}", messageString);
-			logger.error("JSON parse error: {}", FREUtils.getStackString(e.getStackTrace()));
+			logger.error("JSON parse error: {}", STMUtils.getStackString(e.getStackTrace()));
 		} catch (IOException e) {
 			logger.error("Couldn't parse message string: {}", messageString);
-			logger.error("IO error: {}", FREUtils.getStackString(e.getStackTrace()));
+			logger.error("IO error: {}", STMUtils.getStackString(e.getStackTrace()));
 		} catch (Exception exception) {
 			logger.error("Error: ", exception);
-			logger.error("Stack Trace: {}", FREUtils.getStackString(exception.getStackTrace()));
+			logger.error("Stack Trace: {}", STMUtils.getStackString(exception.getStackTrace()));
 		} finally {
 			try {
 				logger.debug("Trying to close JMS connection...");
@@ -123,7 +129,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					connection.close();
 				logger.debug("JMS connection closed.");
 			} catch (JMSException jmsEx) {
-				logger.error("Couldn't close JMS connection: {}", FREUtils.getStackString(jmsEx.getStackTrace()));
+				logger.error("Couldn't close JMS connection: {}", STMUtils.getStackString(jmsEx.getStackTrace()));
 			}
 		}
 	}
@@ -142,6 +148,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 
 			GPSRecordParser p = GPSRecordParser.getParser();
 			UTInfoBean currUTInfo = p.parseSimple(messageString);
+			STMConstants.currAccessNetwork = currUTInfo.getAccessnetwork();
 			
 			switch (targetType) {
 			
@@ -188,7 +195,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 
 	public synchronized void onException(JMSException ex) {
 		logger.error("JMS Exception occured.  Shutting down client. See stack trace below");
-		logger.error("JSM Exception Stack Trace: {}", FREUtils.getStackString(ex.getStackTrace()));
+		logger.error("JSM Exception Stack Trace: {}", STMUtils.getStackString(ex.getStackTrace()));
 	}
 	
 	private boolean PostToSPB(UTInfoBean currUTInfo) {

@@ -30,6 +30,9 @@ public class GPSRecordConsumer {
 	private static String spbusername = "";
 	private static String spbpasswd = "";
 	private static String spburl = "";
+	private static String spbusername2 = "";
+	private static String spbpasswd2 = "";
+	private static String spburl2 = "";
 	private static int targetType = 2;
 	
 
@@ -91,25 +94,25 @@ public class GPSRecordConsumer {
 					
 					String dbconn = prop.getProperty("dbconnectionURL");
 					if(dbconn != null)
-						FREConstants.connectionURL=dbconn;
+						STMConstants.connectionURL=dbconn;
 					String dbuser = prop.getProperty("dbuser");
 					if(dbuser != null)
-						FREConstants.user=dbuser;
+						STMConstants.user=dbuser;
 					
 					String dbpass = prop.getProperty("dbpasswd");
 					if(dbpass != null)
-						FREConstants.passwd=dbpass;
+						STMConstants.passwd=dbpass;
 					
 					String dbConnectionInitialPoolSize = prop.getProperty("dbConnectionInitialPoolSize");
 					if(dbConnectionInitialPoolSize != null)
-						FREConstants.DBConnectionInitialPoolSize=Integer.parseInt(dbConnectionInitialPoolSize);
+						STMConstants.DBConnectionInitialPoolSize=Integer.parseInt(dbConnectionInitialPoolSize);
 					String dbConnectionMaxPoolSize = prop.getProperty("dbConnectionMaxPoolSize");
 					if(dbConnectionMaxPoolSize != null)
-						FREConstants.DBConnectionMaxPoolSize=Integer.parseInt(dbConnectionMaxPoolSize);
+						STMConstants.DBConnectionMaxPoolSize=Integer.parseInt(dbConnectionMaxPoolSize);
 					
 					String tz = prop.getProperty("TimeZone");
 					if(tz != null)
-						FREConstants.TimeZone=tz;
+						STMConstants.TimeZone=tz;
 					
 					String tu = prop.getProperty("GPSMessageTimeUnit");
 					if(tu != null) {
@@ -118,29 +121,41 @@ public class GPSRecordConsumer {
 							throw new IOException("Unkown time unit - check properties file.");
 						}
 						else {
-							FREConstants.gpsMessageTimeUnit = timeUnit;
+							STMConstants.gpsMessageTimeUnit = timeUnit;
 						}
 					}
 					
 					String frd = prop.getProperty("frexitProcessDelta");
 					if(frd != null)
-						FREConstants.frexitProcessDelta=new Long(frd);
+						STMConstants.frexitProcessDelta=new Long(frd);
 					
 					String spburl = prop.getProperty("spburl");
 					if(spburl != null)
-						FREConstants.spburl=spburl;
+						STMConstants.spburl=spburl;
 					
 					String spbuser = prop.getProperty("spbuser");
 					if(spbuser != null)
-						FREConstants.spbuser=spbuser;
+						STMConstants.spbuser=spbuser;
 					
 					String spbpass = prop.getProperty("spbpasswd");
 					if(spbpass != null)
-						FREConstants.spbpasswd=spbpass;
+						STMConstants.spbpasswd=spbpass;
+					
+					String spburl2 = prop.getProperty("spburl2");
+					if(spburl2 != null)
+						STMConstants.spburl2=spburl2;
+					
+					String spbuser2 = prop.getProperty("spbuser2");
+					if(spbuser2 != null)
+						STMConstants.spbuser2=spbuser2;
+					
+					String spbpass2 = prop.getProperty("spbpasswd2");
+					if(spbpass2 != null)
+						STMConstants.spbpasswd2=spbpass2;
 					
 					String tgt = prop.getProperty("targetType");
 					if (tgt != null)
-						FREConstants.targetType=Integer.parseInt(tgt);
+						STMConstants.targetType=Integer.parseInt(tgt);
 					
 				}
 			}
@@ -149,10 +164,12 @@ public class GPSRecordConsumer {
 					new Object[] { username, passwd, subject, url });
 			
 			logger.info("Loaded Settings - spb user: {}; spb passwd: {}; spb url: {}",
-					new Object[] { FREConstants.spbuser, FREConstants.spbpasswd, FREConstants.spburl });
+					new Object[] { STMConstants.spbuser, STMConstants.spbpasswd, STMConstants.spburl });
+			logger.info("Loaded Settings - spb user2: {}; spb passwd2: {}; spb url2: {}",
+					new Object[] { STMConstants.spbuser2, STMConstants.spbpasswd2, STMConstants.spburl2 });
 			
 			GPSRecordConsumerThread messageReader = new GPSRecordConsumerThread(
-					url, subject, username, passwd, receiverTimeout, FREConstants.spbuser, FREConstants.spbpasswd, FREConstants.spburl, FREConstants.targetType );
+					url, subject, username, passwd, receiverTimeout, STMConstants.spbuser, STMConstants.spbpasswd, STMConstants.spburl, STMConstants.spbuser2, STMConstants.spbpasswd2, STMConstants.spburl2, STMConstants.targetType );
 			boolean keepRunning = keepRunning();
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			executor.execute(messageReader);
@@ -164,7 +181,7 @@ public class GPSRecordConsumer {
 				} catch (InterruptedException e) {
 					logger.error("GPSRecordConsumer main method interrupted. "
 							+ "Shutting down consumer thread. See stack trace.");
-					logger.error("", FREUtils.getStackString(e.getStackTrace()));
+					logger.error("", STMUtils.getStackString(e.getStackTrace()));
 					keepRunning = false;
 				}
 			}
