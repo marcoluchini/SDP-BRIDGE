@@ -133,51 +133,66 @@ public class PostToSPBTable {
 			};
 				
 			request.setBulkOperationFailureBehaviour(BulkOperationFailureBehaviour.AllOrNothing);
-
-			SubscriberKey subscriberKey = new SubscriberKey();
-			subscriberKey.setName(currUTInfo.getImsiAsString());
-			SubscriberRealmKey realmKey = new SubscriberRealmKey();
-			realmKey.setName("DEFAULT");
-			subscriberKey.setSubscriberRealmKey(realmKey);
-
-			SetSubscriberAttributeParameterSet SubSets1 = new SetSubscriberAttributeParameterSet();
-			SetSubscriberAttributeParameterSet SubSets2 = new SetSubscriberAttributeParameterSet();
-			SetSubscriberAttributeParameterSet SubSets3 = new SetSubscriberAttributeParameterSet();
-			SetSubscriberAttributeParameterSet SubSets4 = new SetSubscriberAttributeParameterSet();
-			SubscriberAttributeDefinitionKey SubAtt1 = new SubscriberAttributeDefinitionKey();
-			SubscriberAttributeDefinitionKey SubAtt2 = new SubscriberAttributeDefinitionKey();
-			SubscriberAttributeDefinitionKey SubAtt3 = new SubscriberAttributeDefinitionKey();
-			SubscriberAttributeDefinitionKey SubAtt4 = new SubscriberAttributeDefinitionKey();
-
-			SubSets1.setSubscriberKey(subscriberKey);
-			SubAtt1.setName("SatelliteID");
-			SubSets1.setSubscriberAttributeDefinitionKey(SubAtt1);
-			SubSets1.setValue(currUTInfo.getSatelliteid());
-
-			SubSets2.setSubscriberKey(subscriberKey);
-			SubAtt2.setName("BeamID");
-			SubSets2.setSubscriberAttributeDefinitionKey(SubAtt2);
-			SubSets2.setValue(Integer.toString(currUTInfo.getBeamid()));
-
-			SubSets3.setSubscriberKey(subscriberKey);
-			SubAtt3.setName("SAC");
-			SubSets3.setSubscriberAttributeDefinitionKey(SubAtt3);
-			SubSets3.setValue(currUTInfo.getSacAsString());
-
-			SubSets4.setSubscriberKey(subscriberKey);
-			SubAtt4.setName("Coordinate");
-			SubSets4.setSubscriberAttributeDefinitionKey(SubAtt4);
-			SubSets4.setValue(Double.toString(currUTInfo.getLatitude()) + "," + Double.toString(currUTInfo.getLongitude()));
-
+			
 			// Array attributeparamsets of type attributeparamset...
 			SetSubscriberAttributeParameterSet[] setSubscriberAttributeParameterSets;
-			setSubscriberAttributeParameterSets = new SetSubscriberAttributeParameterSet[4];
+			setSubscriberAttributeParameterSets = new SetSubscriberAttributeParameterSet[GPSRecordConsumer.batch_size*4];
 
-			setSubscriberAttributeParameterSets[0] = SubSets1;
-			setSubscriberAttributeParameterSets[1] = SubSets2;
-			setSubscriberAttributeParameterSets[2] = SubSets3;
-			setSubscriberAttributeParameterSets[3] = SubSets4;
+			for (int i=0; i<GPSRecordConsumer.batch_size; i++) {
+				if (currUTInfo.getAccessnetwork() == 2) {
+					logger.error("Current BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
+					logger.error("Processing record:" + i);			
+					currUTInfo = GPSRecordConsumer.BGAN_message.remove(GPSRecordConsumer.batch_size - i -1);
+					logger.error("After processing BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
+				} else {
+					logger.error("Current GX List size is:" + GPSRecordConsumer.BGAN_message.size());
+					logger.error("Processing record:" + i);			
+					currUTInfo = GPSRecordConsumer.GX_message.remove(GPSRecordConsumer.batch_size - i -1);
+					logger.error("After processing GX List size is:" + GPSRecordConsumer.BGAN_message.size());
 
+				}
+				
+				SubscriberKey subscriberKey = new SubscriberKey();
+				subscriberKey.setName(currUTInfo.getImsiAsString());
+				SubscriberRealmKey realmKey = new SubscriberRealmKey();
+				realmKey.setName("DEFAULT");
+				subscriberKey.setSubscriberRealmKey(realmKey);
+	
+				SetSubscriberAttributeParameterSet SubSets1 = new SetSubscriberAttributeParameterSet();
+				SetSubscriberAttributeParameterSet SubSets2 = new SetSubscriberAttributeParameterSet();
+				SetSubscriberAttributeParameterSet SubSets3 = new SetSubscriberAttributeParameterSet();
+				SetSubscriberAttributeParameterSet SubSets4 = new SetSubscriberAttributeParameterSet();
+				SubscriberAttributeDefinitionKey SubAtt1 = new SubscriberAttributeDefinitionKey();
+				SubscriberAttributeDefinitionKey SubAtt2 = new SubscriberAttributeDefinitionKey();
+				SubscriberAttributeDefinitionKey SubAtt3 = new SubscriberAttributeDefinitionKey();
+				SubscriberAttributeDefinitionKey SubAtt4 = new SubscriberAttributeDefinitionKey();
+	
+				SubSets1.setSubscriberKey(subscriberKey);
+				SubAtt1.setName("SatelliteID");
+				SubSets1.setSubscriberAttributeDefinitionKey(SubAtt1);
+				SubSets1.setValue(currUTInfo.getSatelliteid());
+	
+				SubSets2.setSubscriberKey(subscriberKey);
+				SubAtt2.setName("BeamID");
+				SubSets2.setSubscriberAttributeDefinitionKey(SubAtt2);
+				SubSets2.setValue(Integer.toString(currUTInfo.getBeamid()));
+	
+				SubSets3.setSubscriberKey(subscriberKey);
+				SubAtt3.setName("SAC");
+				SubSets3.setSubscriberAttributeDefinitionKey(SubAtt3);
+				SubSets3.setValue(currUTInfo.getSacAsString());
+	
+				SubSets4.setSubscriberKey(subscriberKey);
+				SubAtt4.setName("Coordinate");
+				SubSets4.setSubscriberAttributeDefinitionKey(SubAtt4);
+				SubSets4.setValue(Double.toString(currUTInfo.getLatitude()) + "," + Double.toString(currUTInfo.getLongitude()));
+	
+				setSubscriberAttributeParameterSets[i*4] = SubSets1;
+				setSubscriberAttributeParameterSets[i*4+1] = SubSets2;
+				setSubscriberAttributeParameterSets[i*4+2] = SubSets3;
+				setSubscriberAttributeParameterSets[i*4+3] = SubSets4;
+			}
+			
 			request.setSetSubscriberAttributeParameterSets(setSubscriberAttributeParameterSets);
 
 			SetSubscriberAttributesResponse response = subscriberServicesPort.setSubscriberAttributes(request);

@@ -201,10 +201,34 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 	private boolean PostToSPB(UTInfoBean currUTInfo) {
 		
 		PostToSPBTable actTable = PostToSPBTable.getTable();
-		if (actTable.Invoke_PLE(currUTInfo)) {
-		return actTable.Post(currUTInfo);
-		}
-		else {
+		//if (actTable.Invoke_PLE(currUTInfo)) {
+		if (true) {
+			if (currUTInfo.getAccessnetwork() == 2) {			
+				if (GPSRecordConsumer.BGAN_message.size() < GPSRecordConsumer.batch_size) {
+					GPSRecordConsumer.BGAN_message.add(currUTInfo);
+					logger.error("Added message to List. Current BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
+					return false;
+				} else {
+					logger.error("BGAN List size is:" + GPSRecordConsumer.BGAN_message.size() + " calling POST.");
+					actTable.Post(currUTInfo);
+					//empty BGAN_message
+					GPSRecordConsumer.BGAN_message.clear();
+					return true;
+				}
+			}	else {
+				if (GPSRecordConsumer.GX_message.size() < GPSRecordConsumer.batch_size) {
+					GPSRecordConsumer.GX_message.add(currUTInfo);
+					logger.error("Added message to GX List. Current List size is:" + GPSRecordConsumer.GX_message.size());
+					return false;
+				} else {
+					logger.error("GX List size is:" + GPSRecordConsumer.GX_message.size() + " calling POST.");
+					actTable.Post(currUTInfo);
+					//empty BGAN_message
+					GPSRecordConsumer.GX_message.clear();
+					return true;
+				}
+			}
+		} else {
 			return false;
 		}
 		

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +15,8 @@ import javax.jms.JMSException;
 import org.apache.activemq.ActiveMQConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.inmarsat.stm.urs.beans.UTInfoBean;
 
 public class GPSRecordConsumer {
 
@@ -35,6 +38,10 @@ public class GPSRecordConsumer {
 	private static String spburl2 = "";
 	private static int targetType = 2;
 	
+	public static ArrayList<UTInfoBean> BGAN_message = new ArrayList<UTInfoBean> ();
+	public static ArrayList<UTInfoBean> GX_message = new ArrayList<UTInfoBean> ();
+
+	public static int batch_size = 5;
 
 	public static void main(String args[]) throws JMSException, InterruptedException {
 
@@ -43,9 +50,16 @@ public class GPSRecordConsumer {
 
 		try {
 
-			if (args.length == 1) { // assume it's a properties file and
+			if (args.length == 1) { // assume it's a properties file or batch size and
 									// nothing else
-				propsFilePath = args[0];
+				try {
+					batch_size = Integer.parseInt(args[0]);
+				} catch(NumberFormatException e) {
+					//not and int thus a properties file
+					propsFilePath = args[0];
+				}
+				 
+				
 			}
 			
 			if (args.length > 1) { // assume all settings are from args
