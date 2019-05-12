@@ -136,19 +136,27 @@ public class PostToSPBTable {
 			
 			// Array attributeparamsets of type attributeparamset...
 			SetSubscriberAttributeParameterSet[] setSubscriberAttributeParameterSets;
-			setSubscriberAttributeParameterSets = new SetSubscriberAttributeParameterSet[GPSRecordConsumer.batch_size*4];
 
-			for (int i=0; i<GPSRecordConsumer.batch_size; i++) {
-				if (currUTInfo.getAccessnetwork() == 2) {
-					logger.error("Current BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
-					logger.error("Processing record:" + i);			
-					currUTInfo = GPSRecordConsumer.BGAN_message.remove(GPSRecordConsumer.batch_size - i -1);
-					logger.error("After processing BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
+			int currentBatchSize = 0;
+			if (currUTInfo.getAccessnetwork() == STMConstants.accessNetBGAN) {
+				currentBatchSize = GPSRecordConsumer.BGAN_batch_size;
+			} else if (currUTInfo.getAccessnetwork() == STMConstants.accessNetGX) {
+				currentBatchSize = GPSRecordConsumer.GX_batch_size;
+			}	
+			setSubscriberAttributeParameterSets = new SetSubscriberAttributeParameterSet[currentBatchSize*4];
+			logger.debug("Current network is:" + currUTInfo.getAccessnetwork() + " and batch size: " + currentBatchSize);
+			
+			for (int i=0; i<currentBatchSize; i++) {
+				if (currUTInfo.getAccessnetwork() == STMConstants.accessNetBGAN) {
+					logger.debug("Current BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
+					logger.debug("Processing record:" + (GPSRecordConsumer.BGAN_batch_size - i -1) );			
+					currUTInfo = GPSRecordConsumer.BGAN_message.remove(GPSRecordConsumer.BGAN_batch_size - i -1);
+					logger.debug("After processing BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
 				} else {
-					logger.error("Current GX List size is:" + GPSRecordConsumer.BGAN_message.size());
-					logger.error("Processing record:" + i);			
-					currUTInfo = GPSRecordConsumer.GX_message.remove(GPSRecordConsumer.batch_size - i -1);
-					logger.error("After processing GX List size is:" + GPSRecordConsumer.BGAN_message.size());
+					logger.debug("Current GX List size is:" + GPSRecordConsumer.GX_message.size());
+					logger.debug("Processing record:" + (GPSRecordConsumer.GX_batch_size - i -1) );			
+					currUTInfo = GPSRecordConsumer.GX_message.remove(GPSRecordConsumer.GX_batch_size - i -1);
+					logger.debug("After processing GX List size is:" + GPSRecordConsumer.GX_message.size());
 
 				}
 				

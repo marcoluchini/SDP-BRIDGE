@@ -27,7 +27,7 @@ public class GPSRecordConsumer {
 	private static String subject = "TESTQUEUE";
 	private static String username = "";
 	private static String passwd = "";
-	private static String propsFilePath = "C:\\Users\\MarcoLuchini\\eclipse-workspace\\stm-urs-bridge\\src\\com\\inmarsat\\stm\\urs\\stm.properties";
+	private static String propsFilePath = "stm.properties";
 	private static Long receiverTimeout = new Long(5000);
 	private static Long receiverMonitorLoop = new Long(10000);
 	private static String spbusername = "";
@@ -41,7 +41,9 @@ public class GPSRecordConsumer {
 	public static ArrayList<UTInfoBean> BGAN_message = new ArrayList<UTInfoBean> ();
 	public static ArrayList<UTInfoBean> GX_message = new ArrayList<UTInfoBean> ();
 
-	public static int batch_size = 5;
+	public final static int batch_size_default = 5;
+	public static int BGAN_batch_size = batch_size_default; // default values overwritten by properties file
+	public static int GX_batch_size = batch_size_default;
 
 	public static void main(String args[]) throws JMSException, InterruptedException {
 
@@ -53,7 +55,7 @@ public class GPSRecordConsumer {
 			if (args.length == 1) { // assume it's a properties file or batch size and
 									// nothing else
 				try {
-					batch_size = Integer.parseInt(args[0]);
+					BGAN_batch_size = Integer.parseInt(args[0]);
 				} catch(NumberFormatException e) {
 					//not and int thus a properties file
 					propsFilePath = args[0];
@@ -99,6 +101,27 @@ public class GPSRecordConsumer {
 					passwd = prop.getProperty("passwd");
 					if (passwd == null)
 						passwd = "";
+					
+					String str_BGAN_batch_size = prop.getProperty("BGAN_batch");
+					if (str_BGAN_batch_size != null) {
+						try {
+							BGAN_batch_size = Integer.parseInt(str_BGAN_batch_size);
+						} catch(NumberFormatException e) {
+							//not and int thus set default
+							BGAN_batch_size = batch_size_default;
+						}
+					}
+					
+					String str_GX_batch_size = prop.getProperty("GX_batch");
+					if (str_GX_batch_size != null) {
+						try {
+							GX_batch_size = Integer.parseInt(str_GX_batch_size);
+						} catch(NumberFormatException e) {
+							//not and int thus set default
+							GX_batch_size = batch_size_default;
+						}
+					}
+					
 					String rto = prop.getProperty("receiverTimeOut");
 					if (rto != null)
 						receiverTimeout = Long.parseLong(rto);
@@ -181,6 +204,7 @@ public class GPSRecordConsumer {
 					new Object[] { STMConstants.spbuser, STMConstants.spbpasswd, STMConstants.spburl });
 			logger.info("Loaded Settings - spb user2: {}; spb passwd2: {}; spb url2: {}",
 					new Object[] { STMConstants.spbuser2, STMConstants.spbpasswd2, STMConstants.spburl2 });
+			logger.info("Current Settings - BGAN Batch: " + BGAN_batch_size + " GX Batch: " + GX_batch_size);
 			
 			GPSRecordConsumerThread messageReader = new GPSRecordConsumerThread(
 					url, subject, username, passwd, receiverTimeout, STMConstants.spbuser, STMConstants.spbpasswd, STMConstants.spburl, STMConstants.spbuser2, STMConstants.spbpasswd2, STMConstants.spburl2, STMConstants.targetType );

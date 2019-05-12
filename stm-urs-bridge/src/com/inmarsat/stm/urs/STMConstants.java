@@ -1,5 +1,8 @@
 package com.inmarsat.stm.urs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.inmarsat.stm.urs.DBUtils.TimeUnits;
 
 public class STMConstants {
@@ -22,6 +25,18 @@ public class STMConstants {
 	public static String spbpasswd2 = "sandvine";
 	public static int targetType = 2;
 	public static int currAccessNetwork = 2;
+	
+	public final static int accessNetBGAN = 2;
+	public final static int accessNetGX = 3;
+	
+	public final static Map<String, Integer> accessNet = createAccessNets();
+
+	private static Map<String, Integer> createAccessNets() {
+	    Map<String, Integer> myMap = new HashMap<String, Integer>();
+	    myMap.put("BGAN", 2);
+	    myMap.put("GX", 3);
+	    return myMap;
+	}
 	
 }
 
