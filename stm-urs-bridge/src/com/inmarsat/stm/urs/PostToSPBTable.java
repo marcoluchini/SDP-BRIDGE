@@ -40,7 +40,7 @@ import com.sandvine.subscriberservices.ws.SubscriberServices_ServiceLocator;
  */
 public class PostToSPBTable {
 
-	final static Logger logger = LoggerFactory.getLogger(UTInfoTable.class);
+	final static Logger logger = LoggerFactory.getLogger(PostToSPBTable.class);
 
 	private static PostToSPBTable table = null;
 	private PostToSPBTable() {

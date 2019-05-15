@@ -23,7 +23,7 @@ import com.inmarsat.stm.urs.beans.UTInfoBean;
 
 public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 
-	final static Logger logger = LoggerFactory.getLogger(GPSRecordConsumer.class);
+	final static Logger logger = LoggerFactory.getLogger(GPSRecordConsumerThread.class);
 
 	private String url = ActiveMQConnection.DEFAULT_BROKER_URL;
 	private String subject = "TESTQUEUE";
@@ -203,16 +203,19 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		PostToSPBTable actTable = PostToSPBTable.getTable();
 		//if (actTable.Invoke_PLE(currUTInfo)) {
 		// Bypasses oracle call for off-net testing
-		if (true) {
+		boolean processCurrentUT = true;
+		if (STMConstants.oracle_enabled)
+			processCurrentUT = actTable.Invoke_PLE(currUTInfo);
+		if (processCurrentUT) {
 			if ( currUTInfo.getAccessnetwork() == STMConstants.accessNetBGAN ) {			
 				if (GPSRecordConsumer.BGAN_message.size() < GPSRecordConsumer.BGAN_batch_size - 1) {
 					GPSRecordConsumer.BGAN_message.add(currUTInfo);
-					logger.debug("Added message to List. Current BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
+					logger.debug("Added message to List. Current BGAN List size is: {}", GPSRecordConsumer.BGAN_message.size());
 					return false;
 				} else {
 					GPSRecordConsumer.BGAN_message.add(currUTInfo);
-					logger.debug("BGAN List size is:" + GPSRecordConsumer.BGAN_message.size() + " calling POST.");
-					logger.debug("Current network is:" + currUTInfo.getAccessnetwork());
+					logger.debug("BGAN List size is:{} calling POST.", GPSRecordConsumer.BGAN_message.size());
+					logger.debug("Current network is: {}", currUTInfo.getAccessnetwork());
 					actTable.Post(currUTInfo);
 					//empty BGAN_message
 					GPSRecordConsumer.BGAN_message.clear();
@@ -221,12 +224,12 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			}	else {
 				if (GPSRecordConsumer.GX_message.size() < GPSRecordConsumer.GX_batch_size - 1 ) {
 					GPSRecordConsumer.GX_message.add(currUTInfo);
-					logger.debug("Added message to GX List. Current List size is:" + GPSRecordConsumer.GX_message.size());
+					logger.debug("Added message to GX List. Current List size is: {}", GPSRecordConsumer.GX_message.size());
 					return false;
 				} else {
 					GPSRecordConsumer.GX_message.add(currUTInfo);
-					logger.debug("GX List size is:" + GPSRecordConsumer.GX_message.size() + " calling POST.");
-					logger.debug("Current network is:" + currUTInfo.getAccessnetwork());
+					logger.debug("GX List size is: {}  calling POST.", GPSRecordConsumer.GX_message.size() );
+					logger.debug("Current network is: {}", currUTInfo.getAccessnetwork());
 					actTable.Post(currUTInfo);
 					//empty GX_message
 					GPSRecordConsumer.GX_message.clear();

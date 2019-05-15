@@ -31,12 +31,14 @@ public class STMConstants {
 	
 	public final static Map<String, Integer> accessNet = createAccessNets();
 
-	private static Map<String, Integer> createAccessNets() {
+	private final static Map<String, Integer> createAccessNets() {
 	    Map<String, Integer> myMap = new HashMap<String, Integer>();
 	    myMap.put("BGAN", 2);
 	    myMap.put("GX", 3);
 	    return myMap;
 	}
+	
+	public static boolean oracle_enabled;
 	
 }
 

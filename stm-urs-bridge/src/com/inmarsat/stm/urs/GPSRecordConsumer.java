@@ -194,6 +194,10 @@ public class GPSRecordConsumer {
 					if (tgt != null)
 						STMConstants.targetType=Integer.parseInt(tgt);
 					
+					String ora = prop.getProperty("oracle_enabled");
+					if (ora != null)
+						STMConstants.oracle_enabled=Boolean.parseBoolean(ora);
+					
 				}
 			}
 
