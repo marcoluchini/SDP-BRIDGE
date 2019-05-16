@@ -109,12 +109,6 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			logger.error("JMS Error: {}", jms.getErrorCode());
 			logger.error("Stack Trace: {}", STMUtils.getStackString(jms.getStackTrace()));
 
-		} catch (JsonParseException e) {
-			logger.error("Couldn't parse message string: {}", messageString);
-			logger.error("JSON parse error: {}", STMUtils.getStackString(e.getStackTrace()));
-		} catch (IOException e) {
-			logger.error("Couldn't parse message string: {}", messageString);
-			logger.error("IO error: {}", STMUtils.getStackString(e.getStackTrace()));
 		} catch (Exception exception) {
 			logger.error("Error: ", exception);
 			logger.error("Stack Trace: {}", STMUtils.getStackString(exception.getStackTrace()));
@@ -139,7 +133,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		return true;
 	}
 
-	private Long process(Message message, String messageString) throws JsonParseException, IOException, JMSException {
+	private Long process(Message message, String messageString) throws JMSException {
 
 		if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
@@ -147,7 +141,19 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			logger.info("Received message: {}", messageString);
 
 			GPSRecordParser p = GPSRecordParser.getParser();
-			UTInfoBean currUTInfo = p.parseSimple(messageString);
+			UTInfoBean currUTInfo = null;
+			try {
+				currUTInfo = p.parseSimple(messageString);
+			} catch (JsonParseException e) {
+				logger.error("Couldn't parse message string: {}", messageString);
+				logger.error("JSON parse error: {}", STMUtils.getStackString(e.getStackTrace()));
+				return new Long (-1);
+			} catch (IOException e) {
+				logger.error("Couldn't parse message string: {}", messageString);
+				logger.error("IO error: {}", STMUtils.getStackString(e.getStackTrace()));
+				return new Long (-1);
+			}  
+			
 			STMConstants.currAccessNetwork = currUTInfo.getAccessnetwork();
 			
 			switch (targetType) {
