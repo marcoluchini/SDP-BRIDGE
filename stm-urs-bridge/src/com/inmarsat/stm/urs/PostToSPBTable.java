@@ -106,7 +106,7 @@ public class PostToSPBTable {
 
 		try {
 			URL newLocation;
-			if ( currUTInfo.getAccessnetwork() == 3 ) {
+			if ( currUTInfo.getAccessnetwork() == STMConstants.accessNetGX ) {
 				newLocation = new URL(STMConstants.spburl );
 			} else {
 				newLocation = new URL(STMConstants.spburl2 );
@@ -126,13 +126,16 @@ public class PostToSPBTable {
 			SetSubscriberAttributesRequest request = new SetSubscriberAttributesRequest();
 			request.setDebug(true);
 			request.setResultOnly(true);
-			if ( currUTInfo.getAccessnetwork() == 3) {
+			if ( currUTInfo.getAccessnetwork() == STMConstants.accessNetGX) {
 				request.setSubscriberAutoCreate(true);				
 			} else {
 				request.setSubscriberAutoCreate(false);
 			};
-				
-			request.setBulkOperationFailureBehaviour(BulkOperationFailureBehaviour.AllOrNothing);
+			
+			//Now that we are batching multiple IMSIs in one bulk request we must set this to AllowPartialFailure
+			//because not all IMSIs may be known for BGAN.  If we were doing only one IMSI then AllOrNothing would be the valid behaviour
+
+			request.setBulkOperationFailureBehaviour(BulkOperationFailureBehaviour.AllowPartialFailure);
 			
 			// Array attributeparamsets of type attributeparamset...
 			SetSubscriberAttributeParameterSet[] setSubscriberAttributeParameterSets;
