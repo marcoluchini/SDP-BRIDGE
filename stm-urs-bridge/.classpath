@@ -2,16 +2,34 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container/wstest"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/activemq-all-5.9.0.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/asm-3.1.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/axis.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/commons-dbutils-1.5.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/jackson-core-asl-1.8.5.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/jackson-mapper-asl-1.8.5.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/javassist-3.12.1.GA.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/ojdbc6-11.2.0.3.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/saaj.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/serializer-2.7.1.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/ttjdbc7-11.2.2.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/ucp-11.2.0.3.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/xalan-2.7.1.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/xercesImpl-2.11.0.SP5.jar"/>
+	<classpathentry kind="lib" path="/home/roussos/Documents/Inmarsat/stm-urs-bridge_lib/xml-apis-1.3.04.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

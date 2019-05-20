@@ -18,6 +18,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.inmarsat.stm.urs.DBUtils.TimeUnits;
 import com.inmarsat.stm.urs.beans.SacMapBean;
 import com.inmarsat.stm.urs.beans.UTInfoBean;
 
@@ -30,12 +31,12 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 	private String username = "";
 	private String passwd = "";
 	Long timeout = new Long(1000);
-	private String spburl =  null; //"http://localhost:8081/SubscriberServices/SubscriberServices";
-	private String spbusername = null; // "sv_admin";
-	private String spbpasswd = null; // "sandvine";
-	private String spburl2 = null; // "http://localhost:8081/SubscriberServices/SubscriberServices";
-	private String spbusername2 = null; // "sv_admin";
-	private String spbpasswd2 = null; // "sandvine";
+	private String spburl =  null; 
+	private String spbusername = null; 
+	private String spbpasswd = null; 
+	private String spburl2 = null; 
+	private String spbusername2 = null; 
+	private String spbpasswd2 = null; 
 	private Integer targetType = STMGlobals.accessNetBGAN;
 
 	public GPSRecordConsumerThread(String url, String subject, String username, String passwd, Long receiverTimeout, String spbusername, String spbpasswd, String spburl, String spbusername2, String spbpasswd2, String spburl2, Integer targetType ) {
@@ -84,7 +85,12 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				if (message != null) {
 					freActDone = false;
 					Long messageTime = process(message, messageString);
-					Long now = STMUtils.getCurrentTime(); //new Date().getTime(); //TODO: could use Calendar? 
+					Long now = STMUtils.getCurrentTime();  
+					// Scale timestamp to seconds for new URS feed -- set property GPSMessageTimeUnit = ms
+					if (STMGlobals.gpsMessageTimeUnit == TimeUnits.MILLISECONDS) { 
+						now = now / 1000; 
+					} 				 
+					
 					logger.debug("now({}) -- messageTime({})", new Object[] { now.toString(), messageTime.toString() });
 					if(messageTime <= 0)
 					{
