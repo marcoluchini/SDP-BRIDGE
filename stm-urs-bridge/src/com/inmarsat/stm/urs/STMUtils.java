@@ -20,7 +20,7 @@ public class STMUtils {
      * @return
      */
     public static java.sql.Date getCurrentDate() {
-    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(STMConstants.TimeZone));
+    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(STMGlobals.TimeZone));
     	Long t = cal.getTimeInMillis();
     	return new java.sql.Date(t);
     	
@@ -34,7 +34,7 @@ public class STMUtils {
      * @return
      */
     public static Long getCurrentTime() {
-    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(STMConstants.TimeZone));
+    	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(STMGlobals.TimeZone));
     	return cal.getTimeInMillis();
     }
     

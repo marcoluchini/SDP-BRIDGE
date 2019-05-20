@@ -16,12 +16,12 @@ public class DBConnectionFactory {
 
 		pds = PoolDataSourceFactory.getPoolDataSource();
 		pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-		pds.setURL(STMConstants.connectionURL);
-		pds.setUser(STMConstants.user);
-		pds.setPassword(STMConstants.passwd);
-		pds.setInitialPoolSize(STMConstants.DBConnectionInitialPoolSize);
-		pds.setMinPoolSize(STMConstants.DBConnectionInitialPoolSize);
-		pds.setMaxPoolSize(STMConstants.DBConnectionMaxPoolSize);
+		pds.setURL(STMGlobals.connectionURL);
+		pds.setUser(STMGlobals.user);
+		pds.setPassword(STMGlobals.passwd);
+		pds.setInitialPoolSize(STMGlobals.DBConnectionInitialPoolSize);
+		pds.setMinPoolSize(STMGlobals.DBConnectionInitialPoolSize);
+		pds.setMaxPoolSize(STMGlobals.DBConnectionMaxPoolSize);
 		
 	}
 	

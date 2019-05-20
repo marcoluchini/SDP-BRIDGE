@@ -30,13 +30,13 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 	private String username = "";
 	private String passwd = "";
 	Long timeout = new Long(1000);
-	private String spburl = "http://localhost:8081/SubscriberServices/SubscriberServices";
-	private String spbusername = "sv_admin";
-	private String spbpasswd = "sandvine";
-	private String spburl2 = "http://localhost:8081/SubscriberServices/SubscriberServices";
-	private String spbusername2 = "sv_admin";
-	private String spbpasswd2 = "sandvine";
-	private Integer targetType = 2;
+	private String spburl =  null; //"http://localhost:8081/SubscriberServices/SubscriberServices";
+	private String spbusername = null; // "sv_admin";
+	private String spbpasswd = null; // "sandvine";
+	private String spburl2 = null; // "http://localhost:8081/SubscriberServices/SubscriberServices";
+	private String spbusername2 = null; // "sv_admin";
+	private String spbpasswd2 = null; // "sandvine";
+	private Integer targetType = STMGlobals.accessNetBGAN;
 
 	public GPSRecordConsumerThread(String url, String subject, String username, String passwd, Long receiverTimeout, String spbusername, String spbpasswd, String spburl, String spbusername2, String spbpasswd2, String spburl2, Integer targetType ) {
 		this.url = url;
@@ -90,7 +90,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					{
 						logger.debug("Received negative time error signal, ignoring message.");
 					}
-					else if (now - messageTime < STMConstants.frexitProcessDelta) {
+					else if (now - messageTime < STMGlobals.frexitProcessDelta) {
 						logger.info("Processing FRExit_Actions");
 						if(processFRExitActions())
 							freActDone = true;
@@ -154,7 +154,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				return new Long (-1);
 			}  
 			
-			STMConstants.currAccessNetwork = currUTInfo.getAccessnetwork();
+			STMGlobals.currAccessNetwork = currUTInfo.getAccessnetwork();
 			
 			switch (targetType) {
 			
@@ -210,10 +210,10 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		//if (actTable.Invoke_PLE(currUTInfo)) {
 		// Bypasses oracle call for off-net testing
 		boolean processCurrentUT = true;
-		if (STMConstants.oracle_enabled)
+		if (STMGlobals.oracle_enabled)
 			processCurrentUT = actTable.Invoke_PLE(currUTInfo);
 		if (processCurrentUT) {
-			if ( currUTInfo.getAccessnetwork() == STMConstants.accessNetBGAN ) {			
+			if ( currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN ) {			
 				if (GPSRecordConsumer.BGAN_message.size() < GPSRecordConsumer.BGAN_batch_size - 1) {
 					GPSRecordConsumer.BGAN_message.add(currUTInfo);
 					logger.debug("Added message to List. Current BGAN List size is: {}", GPSRecordConsumer.BGAN_message.size());

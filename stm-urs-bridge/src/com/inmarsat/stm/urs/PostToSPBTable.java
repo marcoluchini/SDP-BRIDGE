@@ -106,10 +106,10 @@ public class PostToSPBTable {
 
 		try {
 			URL newLocation;
-			if ( currUTInfo.getAccessnetwork() == STMConstants.accessNetGX ) {
-				newLocation = new URL(STMConstants.spburl );
+			if ( currUTInfo.getAccessnetwork() == STMGlobals.accessNetGX ) {
+				newLocation = new URL(STMGlobals.spburl_gx_primary );
 			} else {
-				newLocation = new URL(STMConstants.spburl2 );
+				newLocation = new URL(STMGlobals.spburl_bgan_primary );
 			};
 			SubscriberServices_ServiceLocator locator = new SubscriberServices_ServiceLocator();
 			SubscriberServices_PortType subscriberServicesPort = locator.getSubscriberServicesPort(newLocation);
@@ -126,7 +126,7 @@ public class PostToSPBTable {
 			SetSubscriberAttributesRequest request = new SetSubscriberAttributesRequest();
 			request.setDebug(true);
 			request.setResultOnly(true);
-			if ( currUTInfo.getAccessnetwork() == STMConstants.accessNetGX) {
+			if ( currUTInfo.getAccessnetwork() == STMGlobals.accessNetGX) {
 				request.setSubscriberAutoCreate(true);				
 			} else {
 				request.setSubscriberAutoCreate(false);
@@ -141,16 +141,16 @@ public class PostToSPBTable {
 			SetSubscriberAttributeParameterSet[] setSubscriberAttributeParameterSets;
 
 			int currentBatchSize = 0;
-			if (currUTInfo.getAccessnetwork() == STMConstants.accessNetBGAN) {
+			if (currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN) {
 				currentBatchSize = GPSRecordConsumer.BGAN_batch_size;
-			} else if (currUTInfo.getAccessnetwork() == STMConstants.accessNetGX) {
+			} else if (currUTInfo.getAccessnetwork() == STMGlobals.accessNetGX) {
 				currentBatchSize = GPSRecordConsumer.GX_batch_size;
 			}	
 			setSubscriberAttributeParameterSets = new SetSubscriberAttributeParameterSet[currentBatchSize*4];
 			logger.debug("Current network is:" + currUTInfo.getAccessnetwork() + " and batch size: " + currentBatchSize);
 			
 			for (int i=0; i<currentBatchSize; i++) {
-				if (currUTInfo.getAccessnetwork() == STMConstants.accessNetBGAN) {
+				if (currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN) {
 					logger.debug("Current BGAN List size is:" + GPSRecordConsumer.BGAN_message.size());
 					logger.debug("Processing record:" + (GPSRecordConsumer.BGAN_batch_size - i -1) );			
 					currUTInfo = GPSRecordConsumer.BGAN_message.remove(GPSRecordConsumer.BGAN_batch_size - i -1);

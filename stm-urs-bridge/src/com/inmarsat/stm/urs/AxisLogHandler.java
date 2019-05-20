@@ -50,20 +50,20 @@ Name name = soapEnv.createName("username", "svsec", "http://services.sandvine.co
 SOAPHeaderElement soapHeaderElement = soapHeader.addHeaderElement(name);
 //
 ////soapHeaderElement.setActor(SOAPConstants.URI_SOAP_ACTOR_NEXT);
-if (STMConstants.currAccessNetwork == 2 ) {
-	soapHeaderElement.addTextNode(STMConstants.spbuser2);
+if (STMGlobals.currAccessNetwork == 2 ) {
+	soapHeaderElement.addTextNode(STMGlobals.spbuser_bgan_primary);
 } else {
-	soapHeaderElement.addTextNode(STMConstants.spbuser);
+	soapHeaderElement.addTextNode(STMGlobals.spbuser_gx_primary);
 };
 
 Name name2 = soapEnv.createName("password", "svsec", "http://services.sandvine.com");
 SOAPHeaderElement soapHeaderElement2 = soapHeader.addHeaderElement(name2);
 //
 ////soapHeaderElement.setActor(SOAPConstants.URI_SOAP_ACTOR_NEXT);
-if (STMConstants.currAccessNetwork == 2 ) {
-	soapHeaderElement2.addTextNode(STMConstants.spbpasswd2);
+if (STMGlobals.currAccessNetwork == 2 ) {
+	soapHeaderElement2.addTextNode(STMGlobals.spbpasswd_bgan_primary);
 } else {
-	soapHeaderElement2.addTextNode(STMConstants.spbpasswd);
+	soapHeaderElement2.addTextNode(STMGlobals.spbpasswd_gx_primary);
 }
 soapMsg.saveChanges();
 System.out.println("============================= REQUEST ============================================");

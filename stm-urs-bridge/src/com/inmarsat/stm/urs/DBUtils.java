@@ -174,7 +174,7 @@ public class DBUtils {
 	}
 	
 	public static String getDateAsSQLDateString(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(STMConstants.dateFormatString_javaUtil);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(STMGlobals.dateFormatString_javaUtil);
 		return (dateFormat.format(date));
 	}
 	

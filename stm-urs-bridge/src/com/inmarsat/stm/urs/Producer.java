@@ -34,7 +34,7 @@ public class Producer {
 	//private static String username = "";
 	//private static String passwd = "";
 	private static String inputMessagesFile = "";
-	private static String propsFilePath = "C:\\Users\\MarcoLuchini\\eclipse-workspace\\stm-urs-bridge\\src\\com\\inmarsat\\stm\\urs\\stm.properties";
+	private static String propsFilePath = "stm.properties";
 	
 	public static void main(String[] args) throws JMSException, InterruptedException {
 		
