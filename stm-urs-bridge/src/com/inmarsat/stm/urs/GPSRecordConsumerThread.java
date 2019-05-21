@@ -87,7 +87,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					Long messageTime = process(message, messageString);
 					Long now = STMUtils.getCurrentTime();  
 					// Scale timestamp to seconds for new URS feed -- set property GPSMessageTimeUnit = ms
-					if (STMGlobals.gpsMessageTimeUnit == TimeUnits.MILLISECONDS) { 
+					if (STMGlobals.gpsMessageTimeUnit == TimeUnits.SECONDS) { 
 						now = now / 1000; 
 					} 				 
 					

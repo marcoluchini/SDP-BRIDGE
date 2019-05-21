@@ -3,7 +3,7 @@ package com.inmarsat.stm.urs.beans;
 import java.sql.Date;
 
 import com.inmarsat.stm.urs.DBUtils;
-import com.inmarsat.stm.urs.STMConstants;
+import com.inmarsat.stm.urs.STMGlobals;
 import com.inmarsat.stm.urs.STMUtils;
 
 public class UTInfoBean implements java.io.Serializable {
@@ -130,7 +130,7 @@ public class UTInfoBean implements java.io.Serializable {
 //	}
 
 	public String getDateAsSQLDateString() {
-		return DBUtils.toOracleDateString(capture, STMConstants.gpsMessageTimeUnit);
+		return DBUtils.toOracleDateString(capture, STMGlobals.gpsMessageTimeUnit);
 	}
 
 	
