@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inmarsat.stm.urs;
 
 import java.net.URL;
@@ -110,7 +107,7 @@ public class PostToSPBTable {
 				newLocation = new URL(STMGlobals.spburl_gx_primary );
 			} else {
 				newLocation = new URL(STMGlobals.spburl_bgan_primary );
-			};
+			}
 			SubscriberServices_ServiceLocator locator = new SubscriberServices_ServiceLocator();
 			SubscriberServices_PortType subscriberServicesPort = locator.getSubscriberServicesPort(newLocation);
 			// SubscriberServices_PortType subscriberServicesPort =
@@ -130,7 +127,7 @@ public class PostToSPBTable {
 				request.setSubscriberAutoCreate(true);				
 			} else {
 				request.setSubscriberAutoCreate(false);
-			};
+			}
 			
 			//Now that we are batching multiple IMSIs in one bulk request we must set this to AllowPartialFailure
 			//because not all IMSIs may be known for BGAN.  If we were doing only one IMSI then AllOrNothing would be the valid behaviour
@@ -206,14 +203,23 @@ public class PostToSPBTable {
 			
 			request.setSetSubscriberAttributeParameterSets(setSubscriberAttributeParameterSets);
 
-			SetSubscriberAttributesResponse response = subscriberServicesPort.setSubscriberAttributes(request);
+			SetSubscriberAttributesResponse response = null;
+			try {
+				response = subscriberServicesPort.setSubscriberAttributes(request);
+			} catch (Exception e) {
+				logger.error("SOAP Request failed with exception {} a", e.getMessage() );
+			}
 
 			// Check the response code for SUCCESS
-			if (response.getResult().equals(Result.Success)) {
-				System.out.println("SUCCESS!!!");
+			if (response != null && response.getResult().equals(Result.Success)) {
+				logger.info("SOAP Request successfully submitted to Sandvine WS.");
 				return true;
 			} else {
-				System.out.println("FAILURE!!!");
+				if (response != null) {
+					logger.error("SOAP Request failed with result {}", response.getResult());
+				} else {
+					logger.error("SOAP Request failed and no result is available.");
+				}
 				return false;
 			}
 
