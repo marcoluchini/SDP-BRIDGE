@@ -25,14 +25,30 @@ public class STMGlobals {
 	public static int DBConnectionMaxPoolSize = 10;
 	
 	// Settings for sandvine endpoints should come from properties file
-	public static String spburl_gx_primary = null; //"http://localhost:8080/SubscriberServices/SubscriberServices";
-	public static String spbuser_gx_primary = null; //"sv_admin";
-	public static String spbpasswd_gx_primary = null; //"sandvine";
+	public static String spburl_gx_primary = null;
+	public static String spbuser_gx_primary = null;
+	public static String spbpasswd_gx_primary = null;
 	
-	public static String spburl_bgan_primary = null; //"http://localhost:8080/SubscriberServices/SubscriberServices";
-	public static String spbuser_bgan_primary = null; // "sv_admin";
-	public static String spbpasswd_bgan_primary = null; // "sandvine";
-	
+	public static String spburl_bgan_primary = null;
+	public static String spbuser_bgan_primary = null;
+	public static String spbpasswd_bgan_primary = null;
+
+	public static String spburl_gx_secondary = null;
+	public static String spbuser_gx_secondary = null;
+	public static String spbpasswd_gx_secondary = null;
+
+	public static String spburl_bgan_secondary = null;
+	public static String spbuser_bgan_secondary = null;
+	public static String spbpasswd_bgan_secondary = null;
+
+	// Tracking SPB endpoint status and failover
+	public static boolean SPB_GX_failover = false;
+	public static long SPB_GX_failover_time = 0;
+	public static long SPB_GX_failover_timeout = 30000;
+	public static boolean SPB_BGAN_failover = false;
+	public static long SPB_BGAN_failover_time = 0;
+	public static long SPB_BGAN_failover_timeout = SPB_GX_failover_timeout;
+
 	// Defaults for processing
 	public static int targetType = accessNetBGAN;
 	public static int currAccessNetwork = accessNetBGAN;

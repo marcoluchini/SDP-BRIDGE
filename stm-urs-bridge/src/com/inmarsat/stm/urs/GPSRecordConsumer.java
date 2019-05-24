@@ -166,29 +166,54 @@ public class GPSRecordConsumer {
 					if(frd != null)
 						STMGlobals.frexitProcessDelta=new Long(frd);
 					
-					String spburl = prop.getProperty("spburl");
+					String spburl = prop.getProperty("spburl_gx");
 					if(spburl != null)
 						STMGlobals.spburl_gx_primary=spburl;
 					
-					String spbuser = prop.getProperty("spbuser");
+					String spbuser = prop.getProperty("spbuser_gx");
 					if(spbuser != null)
 						STMGlobals.spbuser_gx_primary=spbuser;
 					
-					String spbpass = prop.getProperty("spbpasswd");
+					String spbpass = prop.getProperty("spbpasswd_gx");
 					if(spbpass != null)
 						STMGlobals.spbpasswd_gx_primary=spbpass;
 					
-					String spburl2 = prop.getProperty("spburl2");
+					String spburl2 = prop.getProperty("spburl_bgan");
 					if(spburl2 != null)
 						STMGlobals.spburl_bgan_primary=spburl2;
 					
-					String spbuser2 = prop.getProperty("spbuser2");
+					String spbuser2 = prop.getProperty("spbuser_bgan");
 					if(spbuser2 != null)
 						STMGlobals.spbuser_bgan_primary=spbuser2;
 					
-					String spbpass2 = prop.getProperty("spbpasswd2");
+					String spbpass2 = prop.getProperty("spbpasswd_bgan");
 					if(spbpass2 != null)
 						STMGlobals.spbpasswd_bgan_primary=spbpass2;
+
+					String spburl3 = prop.getProperty("spburl_gx_sec");
+					if(spburl3 != null)
+						STMGlobals.spburl_gx_secondary=spburl3;
+
+					String spbuser3 = prop.getProperty("spbuser_gx_sec");
+					if(spbuser3 != null)
+						STMGlobals.spbuser_gx_secondary=spbuser3;
+
+					String spbpass3 = prop.getProperty("spbpasswd_gx_sec");
+					if(spbpass3 != null)
+						STMGlobals.spbpasswd_gx_secondary=spbpass3;
+
+					String spburl4 = prop.getProperty("spburl_bgan_sec");
+					if(spburl4 != null)
+						STMGlobals.spburl_bgan_secondary=spburl4;
+
+					String spbuser4 = prop.getProperty("spbuser_bgan_sec");
+					if(spbuser4 != null)
+						STMGlobals.spbuser_bgan_secondary=spbuser4;
+
+					String spbpass4 = prop.getProperty("spbpasswd_bgan_sec");
+					if(spbpass4 != null)
+						STMGlobals.spbpasswd_bgan_secondary=spbpass4;
+
 					
 					String tgt = prop.getProperty("targetType");
 					if (tgt != null)
@@ -204,10 +229,14 @@ public class GPSRecordConsumer {
 			logger.info("Loaded Settings - user: {}; passwd: {}; subject: {}; url: {}",
 					new Object[] { username, passwd, subject, url });
 			
-			logger.info("Loaded Settings - spb user: {}; spb passwd: {}; spb url: {}",
+			logger.info("Loaded Settings - Primary GX SPB user: {}; spb passwd: {}; spb url: {}",
 					new Object[] { STMGlobals.spbuser_gx_primary, STMGlobals.spbpasswd_gx_primary, STMGlobals.spburl_gx_primary });
-			logger.info("Loaded Settings - spb user2: {}; spb passwd2: {}; spb url2: {}",
-					new Object[] { STMGlobals.spbuser_bgan_primary, STMGlobals.spbpasswd_bgan_primary, STMGlobals.spburl_bgan_primary });
+			logger.info("Loaded Settings - Secondary GX SPB user: {}; spb passwd: {}; spb url: {}",
+					new Object[] { STMGlobals.spbuser_gx_secondary, STMGlobals.spbpasswd_gx_secondary, STMGlobals.spburl_gx_secondary });
+			logger.info("Loaded Settings - Primary BGAN SPB user: {}; spb passwd: {}; spb url: {}",
+					new Object[] { STMGlobals.spbuser_bgan_secondary, STMGlobals.spbpasswd_bgan_primary, STMGlobals.spburl_bgan_primary });
+			logger.info("Loaded Settings - Secondary BGAN SPB user: {}; spb passwd: {}; spb url: {}",
+					new Object[] { STMGlobals.spbuser_bgan_secondary, STMGlobals.spbpasswd_bgan_secondary, STMGlobals.spburl_bgan_secondary });
 			logger.info("Current Settings - BGAN Batch: " + BGAN_batch_size + " GX Batch: " + GX_batch_size);
 			
 			GPSRecordConsumerThread messageReader = new GPSRecordConsumerThread(

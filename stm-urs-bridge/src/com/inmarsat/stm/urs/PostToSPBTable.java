@@ -96,22 +96,108 @@ public class PostToSPBTable {
 
 	}
 
+	private URL getSPBEndpoint (int accessNet) {
+
+		URL endpoint = null;
+
+		if ( accessNet == STMGlobals.accessNetGX ) {
+			try {
+				if (STMGlobals.SPB_GX_failover) {
+					endpoint  = new URL(STMGlobals.spburl_gx_secondary );
+				} else {
+					endpoint  = new URL(STMGlobals.spburl_gx_primary);
+				}
+			} catch (Exception e) {
+				logger.error("Failed to create GX SPB URL endpoint with exception {}", e.getMessage());
+			}
+		} else if ( accessNet == STMGlobals.accessNetBGAN ){
+			try {
+				if (STMGlobals.SPB_BGAN_failover) {
+					endpoint  = new URL(STMGlobals.spburl_bgan_secondary );
+				} else {
+					endpoint  = new URL(STMGlobals.spburl_bgan_primary);
+				}
+			} catch (Exception e) {
+				logger.error("Failed to create BGAN SPB URL endpoint with exception {}", e.getMessage());
+			}
+		}
+
+		return endpoint;
+	}
+
+	private SetSubscriberAttributesResponse soapToSPB(int accessNet, SetSubscriberAttributesRequest request, SubscriberServices_PortType subscriberServicesPort) {
+
+		SetSubscriberAttributesResponse response = null;
+
+		try {
+			if (accessNet == STMGlobals.accessNetGX) {
+				if (!STMGlobals.SPB_GX_failover) {
+					response = subscriberServicesPort.setSubscriberAttributes(request);
+				} else {
+					response = subscriberServicesPort.setSubscriberAttributes(request);
+					// check time out expired, if not to sec, if yes reset to pri + try
+					if (System.currentTimeMillis() - STMGlobals.SPB_GX_failover_time > STMGlobals.SPB_GX_failover_timeout) {
+						STMGlobals.SPB_GX_failover = false;
+						STMGlobals.SPB_GX_failover_time = 0;
+					}
+				}
+			} else if (accessNet == STMGlobals.accessNetBGAN) {
+				if (!STMGlobals.SPB_BGAN_failover) {
+					response = subscriberServicesPort.setSubscriberAttributes(request);
+				} else {
+					response = subscriberServicesPort.setSubscriberAttributes(request);
+					// check time out expired, if not to sec, if yes reset to pri + try
+					if (System.currentTimeMillis() - STMGlobals.SPB_BGAN_failover_time > STMGlobals.SPB_BGAN_failover_timeout) {
+						STMGlobals.SPB_BGAN_failover = false;
+						STMGlobals.SPB_BGAN_failover_time = 0;
+					}
+				}
+			}
+		} catch (Exception e) {
+			if (accessNet == STMGlobals.accessNetGX) {
+				if (STMGlobals.SPB_GX_failover) {
+					logger.error("SOAP Request on secondary GX SPB failed with exception {} ", e.getMessage() );
+					if (STMGlobals.SPB_BGAN_failover) {
+						logger.error("All SPBs down. Shutting down Bridge" );
+						System.exit(-1);
+					}
+				} else {
+					logger.error("SOAP Request on primary GX SPB failed with exception {} ", e.getMessage() );
+					logger.warn("Switching to secondary GX SPB" );
+					STMGlobals.SPB_GX_failover = true;
+					STMGlobals.SPB_GX_failover_time = System.currentTimeMillis();
+				}
+			} else if (accessNet == STMGlobals.accessNetBGAN) {
+				if (STMGlobals.SPB_BGAN_failover) {
+					logger.error("SOAP Request on secondary BGAN SPB failed with exception {} ", e.getMessage() );
+					if (STMGlobals.SPB_GX_failover) {
+						logger.error("All SPBs down. Shutting down Bridge" );
+						System.exit(-1);
+					}
+				} else {
+					logger.error("SOAP Request on primary BGAN SPB failed with exception {} ", e.getMessage() );
+					logger.warn("Switching to secondary BGAN SPB" );
+					STMGlobals.SPB_BGAN_failover = true;
+					STMGlobals.SPB_BGAN_failover_time = System.currentTimeMillis();
+				}
+			}
+		}
+
+		return response;
+	}
+
 	
-		public boolean Post(UTInfoBean currUTInfo) {
+	public boolean Post(UTInfoBean currUTInfo) {
 
 		SimpleProvider clientConfig = configureAxisLogger ();
 
 		try {
-			URL newLocation;
-			if ( currUTInfo.getAccessnetwork() == STMGlobals.accessNetGX ) {
-				newLocation = new URL(STMGlobals.spburl_gx_primary );
-			} else {
-				newLocation = new URL(STMGlobals.spburl_bgan_primary );
-			}
+
+			URL newLocation = getSPBEndpoint(currUTInfo.getAccessnetwork());
+
 			SubscriberServices_ServiceLocator locator = new SubscriberServices_ServiceLocator();
 			SubscriberServices_PortType subscriberServicesPort = locator.getSubscriberServicesPort(newLocation);
-			// SubscriberServices_PortType subscriberServicesPort =
-			// locator.getSubscriberServicesPort();
+
 			org.apache.axis.client.Stub s = (Stub) subscriberServicesPort;
 			s.setTimeout(1000);
 			AxisProperties.setProperty(org.apache.axis.components.net.DefaultCommonsHTTPClientProperties.CONNECTION_DEFAULT_SO_TIMEOUT_KEY, "1000");
@@ -203,12 +289,7 @@ public class PostToSPBTable {
 			
 			request.setSetSubscriberAttributeParameterSets(setSubscriberAttributeParameterSets);
 
-			SetSubscriberAttributesResponse response = null;
-			try {
-				response = subscriberServicesPort.setSubscriberAttributes(request);
-			} catch (Exception e) {
-				logger.error("SOAP Request failed with exception {} a", e.getMessage() );
-			}
+			SetSubscriberAttributesResponse response = soapToSPB(currUTInfo.getAccessnetwork(), request, subscriberServicesPort);
 
 			// Check the response code for SUCCESS
 			if (response != null && response.getResult().equals(Result.Success)) {
