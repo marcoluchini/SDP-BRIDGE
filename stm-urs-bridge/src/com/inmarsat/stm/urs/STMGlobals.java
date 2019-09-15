@@ -48,6 +48,9 @@ public class STMGlobals {
 	public static boolean SPB_BGAN_failover = false;
 	public static long SPB_BGAN_failover_time = 0;
 	public static long SPB_BGAN_failover_timeout = SPB_GX_failover_timeout;
+	
+	// SOAP debug setting in response, overridden in properties file
+	public static boolean SOAP_debug = false;
 
 	// Defaults for processing
 	public static int targetType = accessNetBGAN;

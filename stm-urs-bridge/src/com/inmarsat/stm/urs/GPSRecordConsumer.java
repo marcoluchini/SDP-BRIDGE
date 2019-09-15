@@ -223,6 +223,10 @@ public class GPSRecordConsumer {
 					if (ora != null)
 						STMGlobals.oracle_enabled=Boolean.parseBoolean(ora);
 					
+					String soap_debug = prop.getProperty("SOAP_debug");
+					if (soap_debug != null)
+						STMGlobals.SOAP_debug=Boolean.parseBoolean(soap_debug);
+					
 				}
 			}
 

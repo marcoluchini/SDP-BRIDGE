@@ -54,13 +54,14 @@ public class PostToSPBTable {
 
 		Connection conn = null;
 		CallableStatement cstmt = null;
-		String sql = "BEGIN urs_ple(?, ?, ?, ?, ?, ?, ?, ?); END;";
-		// id, SAC, LATITUDE, LONGITUDE, UNIXDATE, BEAM, SATELLITE, SENT
+		String sql = "BEGIN urs_ple(?, ?, ?, ?, ?, ?, ?, ?, ?); END;";
+		// accessNetwork, id, SAC, LATITUDE, LONGITUDE, UNIXDATE, BEAM, SATELLITE, SENT
 
 		try {
 			conn = DBConnectionFactory.getFRExitConnection();
 
 			cstmt = conn.prepareCall(sql);
+			cstmt.setInt("p_ACCESSNETWORK", entry.getAccessnetwork());
 			cstmt.setLong("p_ID", entry.getImsi());
 			cstmt.setLong("p_UNIXDATE", entry.getCapture());
 			cstmt.setLong("p_SAC", entry.getSac());
@@ -207,7 +208,7 @@ public class PostToSPBTable {
 			locator.setEngine(new AxisClient(clientConfig));
 
 			SetSubscriberAttributesRequest request = new SetSubscriberAttributesRequest();
-			request.setDebug(true);
+			request.setDebug(STMGlobals.SOAP_debug);
 			request.setResultOnly(true);
 			if ( currUTInfo.getAccessnetwork() == STMGlobals.accessNetGX) {
 				request.setSubscriberAutoCreate(true);				
@@ -292,13 +293,16 @@ public class PostToSPBTable {
 			SetSubscriberAttributesResponse response = soapToSPB(currUTInfo.getAccessnetwork(), request, subscriberServicesPort);
 
 			// Check the response code for SUCCESS
-			if (response != null && response.getResult().equals(Result.Success)) {
+			if (response != null && response.getResult().equals(Result.Success)
+					|| 
+				response != null && response.getResult().equals(Result.Partial) && currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN
+					) {
 				logger.info("SOAP Request successfully submitted to Sandvine WS.");
 				return true;
 			} else {
-				if (response != null) {
+				if (response != null)  {
 					logger.error("SOAP Request failed with result {}", response.getResult());
-				} else {
+					} else {
 					logger.error("SOAP Request failed and no result is available.");
 				}
 				return false;

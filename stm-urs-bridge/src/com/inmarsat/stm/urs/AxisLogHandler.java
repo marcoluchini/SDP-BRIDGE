@@ -11,6 +11,8 @@ import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
 import org.apache.axis.utils.Messages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AxisLogHandler extends BasicHandler {
  private static final long serialVersionUID = 1L;
@@ -22,6 +24,8 @@ logMessage(msgContext);
 e.printStackTrace();
 }
  }
+
+final static Logger logger = LoggerFactory.getLogger(AxisLogHandler.class);
 
 private void logMessage(MessageContext msgContext) throws Exception{
 Message inMsg = msgContext.getRequestMessage();
@@ -68,10 +72,14 @@ if (STMGlobals.currAccessNetwork == 2 ) {
 soapMsg.saveChanges();
 System.out.println("============================= REQUEST ============================================");
 System.out.println(Messages.getMessage("inMsg00", (inMsg == null ? "" : inMsg.getSOAPEnvelope().getAsString())));
+logger.info("============================= REQUEST ============================================");
+logger.info(Messages.getMessage("inMsg00", (inMsg == null ? "" : inMsg.getSOAPEnvelope().getAsString())));
 }
 else {
 System.out.println("===================================RESPONSE======================================");
- System.out.println(Messages.getMessage("outMsg00", (outMsg == null ? "" : outMsg.getSOAPEnvelope().getAsString())));
+System.out.println(Messages.getMessage("outMsg00", (outMsg == null ? "" : outMsg.getSOAPEnvelope().getAsString())));
+logger.info("===================================RESPONSE======================================");
+logger.info(Messages.getMessage("outMsg00", (outMsg == null ? "" : outMsg.getSOAPEnvelope().getAsString())));
 }
 }
  @Override public void onFault(MessageContext msgContext) { super.onFault(msgContext);
