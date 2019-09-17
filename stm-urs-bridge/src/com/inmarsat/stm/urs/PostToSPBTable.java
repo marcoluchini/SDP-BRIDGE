@@ -130,6 +130,8 @@ public class PostToSPBTable {
 
 		SetSubscriberAttributesResponse response = null;
 
+		STMGlobals.SPB_retry_with_secondary = false;
+
 		try {
 			if (accessNet == STMGlobals.accessNetGX) {
 				if (!STMGlobals.SPB_GX_failover) {
@@ -165,7 +167,8 @@ public class PostToSPBTable {
 					}
 				} else {
 					logger.error("SOAP Request on primary GX SPB failed with exception {} ", e.getMessage() );
-					logger.warn("Switching to secondary GX SPB" );
+					logger.warn("Switching to secondary GX SPB and retransmitting SOAP Request" );
+					STMGlobals.SPB_retry_with_secondary = true;
 					STMGlobals.SPB_GX_failover = true;
 					STMGlobals.SPB_GX_failover_time = System.currentTimeMillis();
 				}
@@ -179,7 +182,8 @@ public class PostToSPBTable {
 					}
 				} else {
 					logger.error("SOAP Request on primary BGAN SPB failed with exception {} ", e.getMessage() );
-					logger.warn("Switching to secondary BGAN SPB" );
+					logger.warn("Switching to secondary BGAN SPB and retransmitting SOAP Request" );
+					STMGlobals.SPB_retry_with_secondary = true;
 					STMGlobals.SPB_BGAN_failover = true;
 					STMGlobals.SPB_BGAN_failover_time = System.currentTimeMillis();
 				}
@@ -293,6 +297,18 @@ public class PostToSPBTable {
 			request.setSetSubscriberAttributeParameterSets(setSubscriberAttributeParameterSets);
 
 			SetSubscriberAttributesResponse response = soapToSPB(currUTInfo.getAccessnetwork(), request, subscriberServicesPort);
+
+			if (STMGlobals.SPB_retry_with_secondary ) {
+				STMGlobals.SPB_retry_with_secondary = false;
+				if ( currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN ) {
+					s._setProperty("javax.xml.rpc.service.endpoint.address", STMGlobals.spburl_bgan_secondary);
+				} else {
+					s._setProperty("javax.xml.rpc.service.endpoint.address", STMGlobals.spburl_gx_secondary);
+				}
+				logger.debug("Attempting to resend SOAP Request to secondary");
+				response = soapToSPB(currUTInfo.getAccessnetwork(), request, subscriberServicesPort);
+
+			}
 
 			// Check the response code for SUCCESS
 			if (response != null && response.getResult().equals(Result.Success)

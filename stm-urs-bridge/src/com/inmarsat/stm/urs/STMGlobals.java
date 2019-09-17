@@ -50,6 +50,7 @@ public class STMGlobals {
 	public static long SPB_BGAN_failover_timeout = SPB_GX_failover_timeout;
 
 	public static boolean URS_consume_only = false;
+	public static boolean SPB_retry_with_secondary = false;
 
 	// SOAP debug setting in response, overridden in properties file
 	public static boolean SOAP_debug = false;
