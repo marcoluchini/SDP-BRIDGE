@@ -142,7 +142,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 	private Long process(Message message, String messageString) throws JMSException {
 
 		if (message instanceof TextMessage) {
-			TextMessage textMessage = (TextMessage) message; 
+			TextMessage textMessage = (TextMessage) message;
 			messageString = textMessage.getText();
 			logger.debug("Received message: {}", messageString);
 
