@@ -260,10 +260,10 @@ public class GPSRecordConsumer {
 					keepRunning = false;
 				}
 			}
-			logger.info("Shutting down consumber thread and exiting");
+			logger.info("Shutting down consumer thread and exiting");
 			executor.shutdownNow();
 		    if (!executor.awaitTermination(receiverMonitorLoop, TimeUnit.MILLISECONDS)) {
-		        logger.info("Still waiting after {}ms: calling System.exit(0)...", receiverMonitorLoop.toString());
+		        logger.error("Still waiting after {}ms: calling System.exit(0)...", receiverMonitorLoop.toString());
 		        System.exit(0);
 		    }
 //		    System.out.println("Exiting normally...");

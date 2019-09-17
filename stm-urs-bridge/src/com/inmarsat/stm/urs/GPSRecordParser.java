@@ -99,7 +99,7 @@ public class GPSRecordParser {
 		bean.setCapture(capture, STMGlobals.gpsMessageTimeUnit);
 		//bean.setDate(capture);
 
-		logger.info("Parsed JSON - IMSI: {}; SAC: {}, Latitude: {}, {}, Longitude: {}, {}, Capture: {}, beamid {}, satelliteid {}", new Object[] {imsi, sac, latitude, sense1, longitude, sense2, capture, beamId, satelliteId});
+		logger.debug("Parsed JSON - IMSI: {}; SAC: {}, Latitude: {}, {}, Longitude: {}, {}, Capture: {}, beamid {}, satelliteid {}", new Object[] {imsi, sac, latitude, sense1, longitude, sense2, capture, beamId, satelliteId});
 		
 		return bean;
 		

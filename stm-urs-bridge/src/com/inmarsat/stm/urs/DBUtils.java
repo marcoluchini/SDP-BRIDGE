@@ -50,7 +50,7 @@ public class DBUtils {
 			conn = DBConnectionFactory.getFRExitConnection();
 			pstmt = conn.prepareStatement(sql);
 			rows = pstmt.executeUpdate();
-			logger.info("{} row(s) effected in UT_INFO: {}", rows, sql);
+			logger.debug("{} row(s) effected in UT_INFO: {}", rows, sql);
 			return true;
 
 		} catch (SQLException sqlEx) {
@@ -92,7 +92,7 @@ public class DBUtils {
 			//conn = DBConnectionFactory.getFRExitConnection();
 			//pstmt = conn.prepareStatement(sql);
 			rows = pstmt.executeUpdate();
-			logger.info("{} row(s) effected in UT_INFO: {}", rows, sql);
+			logger.debug("{} row(s) effected in UT_INFO: {}", rows, sql);
 			return true;
 
 		} catch (SQLException sqlEx) {

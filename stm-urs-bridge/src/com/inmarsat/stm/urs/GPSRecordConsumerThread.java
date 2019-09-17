@@ -97,15 +97,15 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 						logger.debug("Received negative time error signal, ignoring message.");
 					}
 					else if (now - messageTime < STMGlobals.frexitProcessDelta) {
-						logger.info("Processing FRExit_Actions");
+						logger.debug("Processing FRExit_Actions");
 						if(processFRExitActions())
 							freActDone = true;
 					}
 
 				} else {
-					logger.info("Waiting for message - on {}ms loop.", timeout.toString());
+					logger.debug("Waiting for message - on {}ms loop.", timeout.toString());
 					if (!freActDone) {
-						logger.info("Processing FRExit_Actions");
+						logger.debug("Processing FRExit_Actions");
 						if(processFRExitActions())
 							freActDone = true;
 					}
@@ -144,7 +144,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
 			messageString = textMessage.getText();
-			logger.info("Received message: {}", messageString);
+			logger.debug("Received message: {}", messageString);
 
 			GPSRecordParser p = GPSRecordParser.getParser();
 			UTInfoBean currUTInfo = null;
@@ -194,7 +194,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				}
 				break;
 			default:
-				logger.info("Invalid targetType: {}", targetType );
+				logger.warn("Invalid targetType: {}", targetType );
 			}
 
 			return currUTInfo.getCapture();
@@ -213,11 +213,17 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 	private boolean PostToSPB(UTInfoBean currUTInfo) {
 		
 		PostToSPBTable actTable = PostToSPBTable.getTable();
+
 		//if (actTable.Invoke_PLE(currUTInfo)) {
 		// Bypasses oracle call for off-net testing
 		boolean processCurrentUT = true;
 		if (STMGlobals.oracle_enabled)
 			processCurrentUT = actTable.Invoke_PLE(currUTInfo);
+
+		// if entered URS consume only sate, skip
+		if (STMGlobals.URS_consume_only)
+			processCurrentUT = false;
+
 		if (processCurrentUT) {
 			if ( currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN ) {			
 				if (GPSRecordConsumer.BGAN_message.size() < GPSRecordConsumer.BGAN_batch_size - 1) {

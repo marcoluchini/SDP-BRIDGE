@@ -159,8 +159,9 @@ public class PostToSPBTable {
 				if (STMGlobals.SPB_GX_failover) {
 					logger.error("SOAP Request on secondary GX SPB failed with exception {} ", e.getMessage() );
 					if (STMGlobals.SPB_BGAN_failover) {
-						logger.error("All SPBs down. Shutting down Bridge" );
-						System.exit(-1);
+						logger.error("All SPBs down: Switching to consuming URS feed only." );
+						// System.exit(-1); Do not shut down server, keep consuming URS feed
+						STMGlobals.URS_consume_only =true;
 					}
 				} else {
 					logger.error("SOAP Request on primary GX SPB failed with exception {} ", e.getMessage() );
@@ -172,8 +173,9 @@ public class PostToSPBTable {
 				if (STMGlobals.SPB_BGAN_failover) {
 					logger.error("SOAP Request on secondary BGAN SPB failed with exception {} ", e.getMessage() );
 					if (STMGlobals.SPB_GX_failover) {
-						logger.error("All SPBs down. Shutting down Bridge" );
-						System.exit(-1);
+						logger.error("All SPBs down: Switching to consuming URS feed only." );
+						// System.exit(-1); Do not shut down server, keep consuming URS feed
+						STMGlobals.URS_consume_only =true;
 					}
 				} else {
 					logger.error("SOAP Request on primary BGAN SPB failed with exception {} ", e.getMessage() );
@@ -295,16 +297,16 @@ public class PostToSPBTable {
 			// Check the response code for SUCCESS
 			if (response != null && response.getResult().equals(Result.Success)
 					|| 
-				response != null && response.getResult().equals(Result.Partial) && currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN
-					) {
-				logger.info("SOAP Request successfully submitted to Sandvine WS.");
+				response != null && response.getResult().equals(Result.Partial) && currUTInfo.getAccessnetwork() == STMGlobals.accessNetBGAN) {
+				logger.debug("SOAP Request successfully submitted to Sandvine WS.");
 				return true;
 			} else {
 				if (response != null)  {
-					logger.error("SOAP Request failed with result {}", response.getResult());
+						logger.error("SOAP Request failed with result {}", response.getResult());
 					} else {
-					logger.error("SOAP Request failed and no result is available.");
+						logger.error("SOAP Request failed and no result is available.");
 				}
+
 				return false;
 			}
 
@@ -313,7 +315,7 @@ public class PostToSPBTable {
 			e.printStackTrace();
 		}
 
-			return true;
+		return true;
 	}
 
 	private static SimpleProvider configureAxisLogger() {

@@ -72,14 +72,14 @@ if (STMGlobals.currAccessNetwork == 2 ) {
 soapMsg.saveChanges();
 System.out.println("============================= REQUEST ============================================");
 System.out.println(Messages.getMessage("inMsg00", (inMsg == null ? "" : inMsg.getSOAPEnvelope().getAsString())));
-logger.info("============================= REQUEST ============================================");
-logger.info(Messages.getMessage("inMsg00", (inMsg == null ? "" : inMsg.getSOAPEnvelope().getAsString())));
+logger.debug("============================= REQUEST ============================================");
+logger.debug(Messages.getMessage("inMsg00", (inMsg == null ? "" : inMsg.getSOAPEnvelope().getAsString())));
 }
 else {
 System.out.println("===================================RESPONSE======================================");
 System.out.println(Messages.getMessage("outMsg00", (outMsg == null ? "" : outMsg.getSOAPEnvelope().getAsString())));
-logger.info("===================================RESPONSE======================================");
-logger.info(Messages.getMessage("outMsg00", (outMsg == null ? "" : outMsg.getSOAPEnvelope().getAsString())));
+logger.debug("===================================RESPONSE======================================");
+logger.debug(Messages.getMessage("outMsg00", (outMsg == null ? "" : outMsg.getSOAPEnvelope().getAsString())));
 }
 }
  @Override public void onFault(MessageContext msgContext) { super.onFault(msgContext);
