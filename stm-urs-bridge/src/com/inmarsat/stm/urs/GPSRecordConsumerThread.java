@@ -14,6 +14,8 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.BrokerInfo;
+import org.apache.activemq.transport.TransportListener;
 import org.codehaus.jackson.JsonParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +80,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			consumer = session.createConsumer(destination);
 			if (consumer != null)
 				logger.debug("Created consumer.");
+            enableConnectionListener((ActiveMQConnection) connection);
 
 			boolean freActDone = false;
 			while (!Thread.currentThread().isInterrupted()) {
@@ -133,6 +136,48 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			}
 		}
 	}
+
+    private void printBrokerInfo(ActiveMQConnection connection) {
+        BrokerInfo binfo = null;
+        String conninfo = null;
+
+        try {
+            if ((binfo = ((ActiveMQConnection) connection).getBrokerInfo()) != null) {
+                conninfo = "Connected to : " + binfo.getBrokerName() +
+                        ", Connection Id : " + binfo.getConnectionId() +
+                        ", Client Id : " + ((ActiveMQConnection) connection).getClientID() +
+                        ", TrasportChannel :" + ((ActiveMQConnection) connection).getTransportChannel().toString();
+            } else {
+                conninfo = "Connection information is not available.";
+            }
+            logger.warn(conninfo);
+        } catch (JMSException jms) {
+            logger.error("JMS Error: {}", jms.getErrorCode());
+            logger.error("Stack Trace: {}", STMUtils.getStackString(jms.getStackTrace()));
+        }
+    }
+
+    private void enableConnectionListener (final ActiveMQConnection connection)
+    {
+        ((ActiveMQConnection) connection).addTransportListener(new TransportListener()
+        {
+            public void onCommand( Object command)
+            {
+            }
+            public void onException( IOException error)
+            {
+            }
+            public void transportInterupted()
+            {
+                //printBrokerDisconnectInfo(connection);
+                printBrokerInfo(connection);
+            }
+            public void transportResumed()
+            {
+                printBrokerInfo(connection);
+            }
+        });
+    };
 
 	private boolean processFRExitActions() {
 		
