@@ -157,6 +157,29 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
         }
     }
 
+	protected void printBrokerDisconnectInfo(ActiveMQConnection connection) {
+		{
+			BrokerInfo binfo = null;
+			String conninfo = null;
+
+			try {
+				if ((binfo = ((ActiveMQConnection) connection).getBrokerInfo()) != null) {
+					conninfo = "Disconnected from : " + binfo.getBrokerName() +
+							", Connection Id : " + binfo.getConnectionId() +
+							", Client Id : " + ((ActiveMQConnection) connection).getClientID() +
+							", TrasportChannel :" + ((ActiveMQConnection) connection).getTransportChannel().toString();
+				} else {
+					conninfo = "Connection information is not available.";
+				}
+				logger.warn(conninfo);
+			} catch (JMSException jms) {
+				logger.error("JMS Error: {}", jms.getErrorCode());
+				logger.error("Stack Trace: {}", STMUtils.getStackString(jms.getStackTrace()));
+
+			}
+		}
+	}
+
     private void enableConnectionListener (final ActiveMQConnection connection)
     {
         ((ActiveMQConnection) connection).addTransportListener(new TransportListener()
@@ -169,8 +192,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
             }
             public void transportInterupted()
             {
-                //printBrokerDisconnectInfo(connection);
-                printBrokerInfo(connection);
+                printBrokerDisconnectInfo(connection);
             }
             public void transportResumed()
             {
