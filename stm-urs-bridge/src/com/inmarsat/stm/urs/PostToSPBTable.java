@@ -160,11 +160,7 @@ public class PostToSPBTable {
 			if (accessNet == STMGlobals.accessNetGX) {
 				if (STMGlobals.SPB_GX_failover) {
 					logger.error("SOAP Request on secondary GX SPB failed with exception {} ", e.getMessage() );
-					if (STMGlobals.SPB_BGAN_failover) {
-						logger.error("All SPBs down: Switching to consuming URS feed only." );
-						// System.exit(-1); Do not shut down server, keep consuming URS feed
-						STMGlobals.URS_consume_only =true;
-					}
+					STMGlobals.SPB_GX_failed = true;
 				} else {
 					logger.error("SOAP Request on primary GX SPB failed with exception {} ", e.getMessage() );
 					logger.warn("Switching to secondary GX SPB and retransmitting SOAP Request" );
@@ -175,11 +171,7 @@ public class PostToSPBTable {
 			} else if (accessNet == STMGlobals.accessNetBGAN) {
 				if (STMGlobals.SPB_BGAN_failover) {
 					logger.error("SOAP Request on secondary BGAN SPB failed with exception {} ", e.getMessage() );
-					if (STMGlobals.SPB_GX_failover) {
-						logger.error("All SPBs down: Switching to consuming URS feed only." );
-						// System.exit(-1); Do not shut down server, keep consuming URS feed
-						STMGlobals.URS_consume_only =true;
-					}
+					STMGlobals.SPB_BGAN_failed = true;
 				} else {
 					logger.error("SOAP Request on primary BGAN SPB failed with exception {} ", e.getMessage() );
 					logger.warn("Switching to secondary BGAN SPB and retransmitting SOAP Request" );
@@ -187,6 +179,12 @@ public class PostToSPBTable {
 					STMGlobals.SPB_BGAN_failover = true;
 					STMGlobals.SPB_BGAN_failover_time = System.currentTimeMillis();
 				}
+			}
+			if (STMGlobals.SPB_GX_failed && STMGlobals.SPB_BGAN_failed) {
+				logger.error("All SPBs down: Switching to consuming URS feed only." );
+				// System.exit(-1); Do not shut down server, keep consuming URS feed
+				STMGlobals.URS_consume_only = true;
+				STMGlobals.URS_consume_only_time = System.currentTimeMillis();
 			}
 		}
 

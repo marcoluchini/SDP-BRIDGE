@@ -45,12 +45,19 @@ public class STMGlobals {
 	public static boolean SPB_GX_failover = false;
 	public static long SPB_GX_failover_time = 0;
 	public static long SPB_GX_failover_timeout = 30000;
+	public static boolean SPB_GX_failed = false;
+
 	public static boolean SPB_BGAN_failover = false;
 	public static long SPB_BGAN_failover_time = 0;
 	public static long SPB_BGAN_failover_timeout = SPB_GX_failover_timeout;
+	public static boolean SPB_BGAN_failed = false;
 
 	public static boolean URS_consume_only = false;
+	public static long URS_consume_only_time = 0L;
+	public static long SPB_recover_monitor = 120000;
 	public static boolean SPB_retry_with_secondary = false;
+	public static long URS_inactivty_timeout = 60000;
+	public static boolean URS_reset_connection = false;
 
 	// SOAP debug setting in response, overridden in properties file
 	public static boolean SOAP_debug = false;
