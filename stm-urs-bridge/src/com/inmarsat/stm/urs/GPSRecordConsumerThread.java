@@ -59,7 +59,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		this.spbpasswd2 = spbpasswd2;
 		this.targetType = targetType;
 
-		// STMGlobals.URS_consume_only = false; // Option to reset from USR consume only state
+		// STMGlobals.URS_consume_only = false; // Option to reset from URS consume only state
 
 		String propsFilePath = "stm.properties";
 
@@ -74,7 +74,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				try {
 					GPSRecordConsumer.BGAN_batch_size = Integer.parseInt(args[0]);
 				} catch(NumberFormatException e) {
-					//not and int thus a properties file
+					//not an int thus a properties file
 					propsFilePath = args[0];
 				}
 
@@ -124,7 +124,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 						try {
 							GPSRecordConsumer.BGAN_batch_size = Integer.parseInt(str_BGAN_batch_size);
 						} catch(NumberFormatException e) {
-							//not and int thus set default
+							//not an int thus set default
 							GPSRecordConsumer.BGAN_batch_size = GPSRecordConsumer.batch_size_default;
 						}
 					}
@@ -134,7 +134,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 						try {
 							GPSRecordConsumer.GX_batch_size = Integer.parseInt(str_GX_batch_size);
 						} catch(NumberFormatException e) {
-							//not and int thus set default
+							//not an int thus set default
 							GPSRecordConsumer.GX_batch_size = GPSRecordConsumer.batch_size_default;
 						}
 					}
@@ -142,9 +142,9 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					String str_inactivityMonitor = prop.getProperty("inactivityMonitor");
 					if (str_inactivityMonitor != null) {
 						try {
-							STMGlobals.URS_inactivty_timeout= Integer.parseInt(str_inactivityMonitor);
+							STMGlobals.URS_inactivity_timeout= Integer.parseInt(str_inactivityMonitor);
 						} catch(NumberFormatException e) {
-							//not and int thus set default
+							//not an int thus set default
 							logger.error("Invalid value for URS inactivity monitor. Using default of 60secs.");
 						}
 					} else {
@@ -156,7 +156,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 						try {
 							STMGlobals.SPB_recover_monitor= Integer.parseInt(str_recoveryMonitor);
 						} catch(NumberFormatException e) {
-							//not and int thus set default
+							//not an int thus set default
 							logger.error("Invalid value for SPB recovery monitor. Using default of {}secs.", STMGlobals.SPB_recover_monitor);
 						}
 					} else {
@@ -312,7 +312,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
 			connection = connectionFactory.createConnection(username, passwd);
 			if (connection != null)
-				logger.debug("Established connection");
+				logger.debug("Established connection to url:  {}", url);
 			connection.start();
 			connection.setExceptionListener(this);
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -320,7 +320,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				logger.debug("Created session");
 			Destination destination = session.createQueue(subject);
 			if (destination != null)
-				logger.debug("Created destination");
+				logger.debug("Created destination for subject: {}", subject);
 			consumer = session.createConsumer(destination);
 			if (consumer != null)
 				logger.debug("Created consumer.");
@@ -357,15 +357,15 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 							freActDone = true;
 					}
 					inactivityMonitor += timeout;
-					logger.debug("No messages received for  {}ms.", inactivityMonitor);
-					if (inactivityMonitor >= STMGlobals.URS_inactivty_timeout) {
+					logger.warn("No messages received for  {}ms.", inactivityMonitor);
+					if (inactivityMonitor >= STMGlobals.URS_inactivity_timeout) {
 						STMGlobals.URS_reset_connection = true;
-						logger.debug("Preparing to reset consumer thread. Trying to close JMS connection...");
+						logger.warn("Preparing to reset consumer thread. Trying to close JMS connection...");
 						if (consumer != null) consumer.close();
 						if (session != null) session.close();
 						if (connection != null) connection.close();
-						logger.debug("JMS connection closed.");
-						logger.debug("Creating new JMS connection to URS.");
+						logger.warn("JMS connection closed.");
+						logger.warn("Creating new JMS connection to URS.");
 						return;
 					}
 
@@ -494,7 +494,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				break;
 			case 2:   // BGAN only
 				if (currUTInfo.getAccessnetwork() == 2) {
-					logger.info("accessnetwork({}) BGAN and BGAN only send", currUTInfo.getAccessnetwork() );
+					logger.debug("accessnetwork({}) BGAN and BGAN only send", currUTInfo.getAccessnetwork() );
 					PostToSPB(currUTInfo);
 				} else {
 					return new Long (-1);
@@ -502,7 +502,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 				break;
 			case 3:   // GX only
 				if (currUTInfo.getAccessnetwork() == 3) {
-					logger.info("accessnetwork({}) GX and GX only send", currUTInfo.getAccessnetwork() );
+					logger.debug("accessnetwork({}) GX and GX only send", currUTInfo.getAccessnetwork() );
 					PostToSPB(currUTInfo);
 				} else {
 					return new Long (-1);
@@ -512,7 +512,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			case 23:   // Both BGAN and GX
 			case 32:   // Both BGAN and GX
 				if (currUTInfo.getAccessnetwork() == 2 || currUTInfo.getAccessnetwork() == 3) {
-					logger.info("accessnetwork({}) BGAN or GX  and BGAN or GX send", currUTInfo.getAccessnetwork() );
+					logger.debug("accessnetwork({}) BGAN or GX  and BGAN or GX send", currUTInfo.getAccessnetwork() );
 					PostToSPB(currUTInfo);
 				} else {
 					return new Long (-1);
@@ -551,7 +551,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 			logger.debug("NOW is: {} FAIL is: {} Diff is: {} Monitor is: {}", System.currentTimeMillis(), STMGlobals.URS_consume_only_time,
 					System.currentTimeMillis() - STMGlobals.URS_consume_only_time,  STMGlobals.SPB_recover_monitor);
 			if ( System.currentTimeMillis() - STMGlobals.URS_consume_only_time > STMGlobals.SPB_recover_monitor) {
-				logger.info("Exiting URS consume only state. Re-attempting to post to SPBs.");
+				logger.warn("Exiting URS consume only state. Re-attempting to post to SPBs.");
 				STMGlobals.URS_consume_only = false;
 				STMGlobals.URS_consume_only_time = 0L;
 				STMGlobals.SPB_GX_failed = false;

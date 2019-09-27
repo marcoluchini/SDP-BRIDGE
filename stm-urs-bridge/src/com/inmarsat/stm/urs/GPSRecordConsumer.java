@@ -66,7 +66,7 @@ public class GPSRecordConsumer {
 				keepRunning = false;
 			}
 		}
-		logger.info("Shutting down consumer thread and exiting");
+		logger.error("Shutting down consumer thread and exiting");
 		executor.shutdownNow();
 		if (!executor.awaitTermination(receiverMonitorLoop, TimeUnit.MILLISECONDS)) {
 			logger.error("Still waiting after {}ms: calling System.exit(0)...", receiverMonitorLoop.toString());
