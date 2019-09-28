@@ -28,7 +28,7 @@ public class GPSRecordConsumer {
 	private static String username = "";
 	private static String passwd = "";
 
-	private static Long receiverTimeout = new Long(5000);
+	public static Long receiverTimeout = new Long(5000);
 	public static Long receiverMonitorLoop = new Long(10000);
 
 	

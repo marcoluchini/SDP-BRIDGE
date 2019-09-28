@@ -45,19 +45,19 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 	private String spbpasswd2 = null; 
 	private Integer targetType = STMGlobals.accessNetBGAN;
 
-	public GPSRecordConsumerThread(String args[], String url, String subject, String username, String passwd, Long receiverTimeout, String spbusername, String spbpasswd, String spburl, String spbusername2, String spbpasswd2, String spburl2, Integer targetType ) {
-		this.url = url;
-		this.subject = subject;
-		this.username = username;
-		this.passwd = passwd;
-		timeout = receiverTimeout;
-		this.spburl = spburl;
-		this.spbusername = spbusername;
-		this.spbpasswd = spbpasswd;
-		this.spburl2 = spburl2;
-		this.spbusername2 = spbusername2;
-		this.spbpasswd2 = spbpasswd2;
-		this.targetType = targetType;
+	public GPSRecordConsumerThread(String args[], String url_in, String subject_in, String username_in, String passwd_in, Long receiverTimeout_in, String spbusername_in, String spbpasswd_in, String spburl_in, String spbusername2_in, String spbpasswd2_in, String spburl2_in, Integer targetType_in ) {
+		this.url = url_in;
+		this.subject = subject_in;
+		this.username = username_in;
+		this.passwd = passwd_in;
+		timeout = receiverTimeout_in;
+		this.spburl = spburl_in;
+		this.spbusername = spbusername_in;
+		this.spbpasswd = spbpasswd_in;
+		this.spburl2 = spburl2_in;
+		this.spbusername2 = spbusername2_in;
+		this.spbpasswd2 = spbpasswd2_in;
+		this.targetType = targetType_in;
 
 		// STMGlobals.URS_consume_only = false; // Option to reset from URS consume only state
 
@@ -165,7 +165,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 
 					String rto = prop.getProperty("receiverTimeOut");
 					if (rto != null)
-						receiverTimeout = Long.parseLong(rto);
+						GPSRecordConsumer.receiverTimeout = Long.parseLong(rto);
 					String rml = prop.getProperty("receiverMonitorLoop");
 					if (rml != null)
 						GPSRecordConsumer.receiverMonitorLoop = Long.parseLong(rml);
