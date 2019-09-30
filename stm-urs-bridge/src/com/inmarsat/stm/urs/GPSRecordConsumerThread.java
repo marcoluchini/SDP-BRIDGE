@@ -257,8 +257,10 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 
 
 					String tgt = prop.getProperty("targetType");
-					if (tgt != null)
+					if (tgt != null) {
 						STMGlobals.targetType=Integer.parseInt(tgt);
+						this.targetType=Integer.parseInt(tgt);
+					}
 
 					String ora = prop.getProperty("oracle_enabled");
 					if (ora != null)
