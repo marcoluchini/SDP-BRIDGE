@@ -205,9 +205,9 @@ public class PostToSPBTable {
 			SubscriberServices_PortType subscriberServicesPort = locator.getSubscriberServicesPort(newLocation);
 
 			org.apache.axis.client.Stub s = (Stub) subscriberServicesPort;
-			s.setTimeout(1000);
-			AxisProperties.setProperty(org.apache.axis.components.net.DefaultCommonsHTTPClientProperties.CONNECTION_DEFAULT_SO_TIMEOUT_KEY, "1000");
-
+			s.setTimeout(STMGlobals.socket_timeout);
+			AxisProperties.setProperty(org.apache.axis.components.net.DefaultCommonsHTTPClientProperties.CONNECTION_DEFAULT_SO_TIMEOUT_KEY, Integer.toString(STMGlobals.socket_timeout));
+			logger.debug("SOAP socket timeout set to " + Integer.toString(STMGlobals.socket_timeout));
 
 			locator.setEngineConfiguration(clientConfig);
 			locator.setEngine(new AxisClient(clientConfig));
@@ -309,6 +309,11 @@ public class PostToSPBTable {
 
 			}
 
+			Long responsetime = response.getRequestProcessingTime();
+			logger.debug("Response time " + responsetime.toString());
+			if ( responsetime > STMGlobals.socket_timeout / 2 ) {
+				logger.warn("Response time " + responsetime.toString() + " more than half timeout " + Integer.toString(STMGlobals.socket_timeout));
+			}
 			// Check the response code for SUCCESS
 			if (response != null && response.getResult().equals(Result.Success)
 					|| 

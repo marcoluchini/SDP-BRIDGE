@@ -270,6 +270,10 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					if (soap_debug != null)
 						STMGlobals.SOAP_debug=Boolean.parseBoolean(soap_debug);
 
+					String socket_timeout = prop.getProperty("socket_timeout");
+					if (socket_timeout != null)
+						STMGlobals.socket_timeout=Integer.parseInt(socket_timeout);
+
 				}
 			}
 

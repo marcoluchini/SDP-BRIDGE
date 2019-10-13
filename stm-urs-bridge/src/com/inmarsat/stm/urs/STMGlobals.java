@@ -61,6 +61,8 @@ public class STMGlobals {
 
 	// SOAP debug setting in response, overridden in properties file
 	public static boolean SOAP_debug = false;
+	// timeout waiting for a response from the SOAP request, overridden in properties file
+	public static int socket_timeout = 1000;
 
 	// Defaults for processing
 	public static int targetType = accessNetBGAN;
