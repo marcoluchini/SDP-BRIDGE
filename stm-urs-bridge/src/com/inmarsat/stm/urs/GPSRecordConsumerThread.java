@@ -367,11 +367,16 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					if (inactivityMonitor >= STMGlobals.URS_inactivity_timeout) {
 						STMGlobals.URS_reset_connection = true;
 						logger.warn("Preparing to reset consumer thread. Trying to close JMS connection...");
-						if (consumer != null) consumer.close();
-						if (session != null) session.close();
-						if (connection != null) connection.close();
-						logger.warn("JMS connection closed.");
-						logger.warn("Creating new JMS connection to URS.");
+						try {
+							if (consumer != null) consumer.close();
+							if (session != null) session.close();
+							if (connection != null) connection.close();
+							if (consumer != null) consumer.close();
+							logger.warn("JMS connection closed due to inactivity.");
+							logger.warn("Creating new JMS connection to URS.");
+						} catch (JMSException jmsEx) {
+							logger.error("Couldn't close JMS connection during inactivity reset: {}", STMUtils.getStackString(jmsEx.getStackTrace()));
+						}
 						return;
 					}
 
@@ -388,12 +393,10 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		} finally {
 			try {
 				logger.debug("Trying to close JMS connection...");
-				if (consumer != null)
-					consumer.close();
-				if (session != null)
-					session.close();
-				if (connection != null)
-					connection.close();
+				if (consumer != null) consumer.close();
+				if (session != null) session.close();
+				if (connection != null) connection.close();
+				if (consumer != null) consumer.close();
 				logger.debug("JMS connection closed.");
 			} catch (JMSException jmsEx) {
 				logger.error("Couldn't close JMS connection: {}", STMUtils.getStackString(jmsEx.getStackTrace()));
