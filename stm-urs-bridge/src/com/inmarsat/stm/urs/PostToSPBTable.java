@@ -134,6 +134,7 @@ public class PostToSPBTable {
 
 		try {
 			if (accessNet == STMGlobals.accessNetGX) {
+				STMGlobals.SPB_GX_failed = false;
 				if (!STMGlobals.SPB_GX_failover) {
 					response = subscriberServicesPort.setSubscriberAttributes(request);
 				} else {
@@ -145,6 +146,7 @@ public class PostToSPBTable {
 					}
 				}
 			} else if (accessNet == STMGlobals.accessNetBGAN) {
+				STMGlobals.SPB_BGAN_failed = false;
 				if (!STMGlobals.SPB_BGAN_failover) {
 					response = subscriberServicesPort.setSubscriberAttributes(request);
 				} else {
