@@ -26,7 +26,7 @@ public class UTInfoTable {
 		return table;
 	}
 	
-	@SuppressWarnings("resource")
+//	@SuppressWarnings("resource")
 	public boolean containsImsi(Long imsi) {
 				
 		Connection conn = null;

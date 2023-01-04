@@ -582,7 +582,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					GPSRecordConsumer.BGAN_message.add(currUTInfo);
 					logger.debug("BGAN List size is:{} calling POST.", GPSRecordConsumer.BGAN_message.size());
 					logger.debug("Current network is: {}", currUTInfo.getAccessnetwork());
-					// actTable.Post(currUTInfo);
+					actTable.Post(currUTInfo);
 					//empty BGAN_message
 					GPSRecordConsumer.BGAN_message.clear();
 					return true;
@@ -596,7 +596,7 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 					GPSRecordConsumer.GX_message.add(currUTInfo);
 					logger.debug("GX List size is: {}  calling POST.", GPSRecordConsumer.GX_message.size() );
 					logger.debug("Current network is: {}", currUTInfo.getAccessnetwork());
-					// actTable.Post(currUTInfo);
+					actTable.Post(currUTInfo);
 					//empty GX_message
 					GPSRecordConsumer.GX_message.clear();
 					return true;
