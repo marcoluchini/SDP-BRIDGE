@@ -550,8 +550,8 @@ public class GPSRecordConsumerThread implements Runnable, ExceptionListener {
 		//if (actTable.Invoke_PLE(currUTInfo)) {
 		// Bypasses oracle call for off-net testing
 		boolean processCurrentUT = true;
-		if (Globals.oracle_enabled)
-			processCurrentUT = actTable.Invoke_PLE(currUTInfo);
+		// if (Globals.oracle_enabled)
+		//	processCurrentUT = actTable.Invoke_PLE(currUTInfo);
 
 		// if entered URS consume only state, skip
 		if (Globals.URS_consume_only) {

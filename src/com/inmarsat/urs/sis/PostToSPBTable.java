@@ -80,11 +80,16 @@ public class PostToSPBTable {
 	
 	public boolean Post(UTInfoBean currUTInfo) {
 		Connection conn = null;
-		String sql = "INSERT INTO UT_INFO(ID, SAC, LATITUDE, LONGITUDE, BEAM, SATELLITE) VALUES (?, ?, ?, ?, ?, ?)";
+//		String sql = "INSERT INTO UT_INFO(ID, SAC, LATITUDE, LONGITUDE, UNIXDATE, BEAM, SATELLITE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO UT_INFO(ID, SAC, LATITUDE, LONGITUDE, UNIXDATE, BEAM, SATELLITE) VALUES (?, ?, ?, ?, ?, ?, ?)"
+				+ " LOG ERRORS INTO UT_INFO_INSERT_ERRORS REJECT LIMIT UNLIMITED";
 		
 		try {	
-			conn = DBConnectionFactory.getFRExitConnection();			
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			conn = DBConnectionFactory.getFRExitConnection();
+			// Disable auto-commit as recommended for batch operations
+			conn.setAutoCommit(false);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			logger.debug(sql);
 			// accessNetwork, ID, SAC, LATITUDE, LONGITUDE, UNIXDATE, BEAM, SATELLITE
 
 
@@ -109,23 +114,32 @@ public class PostToSPBTable {
 					logger.debug("After processing GX List size is:" + GPSRecordConsumer.GX_message.size());
 
 				}
-				
-				stmt.setLong(1, currUTInfo.getImsi());
-				stmt.setInt(2, currUTInfo.getSac());
-				stmt.setDouble(3, currUTInfo.getLatitude());
-				stmt.setDouble(4, currUTInfo.getLongitude());
-				stmt.setInt(5, currUTInfo.getBeamid());
-				stmt.setString(6, currUTInfo.getSatelliteid());
-				stmt.addBatch();
-			}
-			stmt.close();
-			conn.close();
 
+				logger.debug("Insert is: " + currUTInfo.getImsiAsString() + " "+ currUTInfo.getCapture().toString());				
+				pstmt.setLong(1, currUTInfo.getImsi());
+				pstmt.setInt(2, currUTInfo.getSac());
+				pstmt.setDouble(3, currUTInfo.getLatitude());
+				pstmt.setDouble(4, currUTInfo.getLongitude());
+				pstmt.setLong(5, currUTInfo.getCapture());
+				pstmt.setInt(6, currUTInfo.getBeamid());
+				pstmt.setString(7, currUTInfo.getSatelliteid());
+				pstmt.addBatch();
+			}
+			int[] updateCounts = pstmt.executeBatch();			
+			conn.commit();
+			pstmt.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
+		
 		return true;
 	}
 
