@@ -2,29 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/activemq-all-5.15.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/asm-3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/cglib-2.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/commons-dbutils-1.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/jackson-core-asl-1.8.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/jackson-mapper-asl-1.8.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/javassist-3.12.1.GA.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/jsch-0.1.55.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/jta-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/log4j-1.2.17.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/ojdbc8-19.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/saaj.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/serializer-2.7.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/ttjdbc7-11.2.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/ucp-19.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/wsdl4j.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/xalan-2.7.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/xercesImpl-2.11.0.SP5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/SIS/URS2SIS_lib/xml-apis-1.3.04.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/BCTT/SDP-BRIDGE_lib/activemq-all-5.16.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/BCTT/SDP-BRIDGE_lib/jackson-annotations-2.14.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/BCTT/SDP-BRIDGE_lib/jackson-core-2.14.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/BCTT/SDP-BRIDGE_lib/jackson-databind-2.14.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/BCTT/SDP-BRIDGE_lib/log4j-core-2.19.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/BCTT/SDP-BRIDGE_lib/ucp-21.8.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MarcoLuchini/Documents/marco/inmarsat/BCTT/SDP-BRIDGE_lib/ojdbc8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
