@@ -29,7 +29,7 @@ public class DBConnectionFactory {
 		return pds.getConnection();	
 	}
 
-	public static Connection getFRExitConnection() throws SQLException {
+	public static Connection getOracleConnection() throws SQLException {
 		
 		if(dbConnFactory == null)
 			dbConnFactory = new DBConnectionFactory();

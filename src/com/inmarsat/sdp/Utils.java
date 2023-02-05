@@ -29,34 +29,14 @@ public class Utils {
     }
     
     /**
-     * Time in milliseconds from epoc: January 1 1970 00:00:00
-     * The time zone is defined in FREContstants
+     * Time in milliseconds from epoch: January 1 1970 00:00:00
+     * The time zone is defined in Globals
      * @return
      */
     public static Long getCurrentTime() {
     	Calendar cal = new GregorianCalendar(TimeZone.getTimeZone(Globals.TimeZone));
     	return cal.getTimeInMillis();
     }
-    
-//    public static Long getCurrentTime() {
-//    	DateFormat dfm = new SimpleDateFormat("yyyyMMddHHmm");  
-//
-//        long unixtime = 0;
-//        String time = null;
-//        
-//            dfm.setTimeZone(TimeZone.getTimeZone("GMT+5:30"));//Specify your timezone 
-//        try
-//        {
-//            unixtime = dfm.parse(time).getTime();  
-//            unixtime=unixtime/1000;
-//        } 
-//        catch (ParseException e) 
-//        {
-//            e.printStackTrace();
-//        }
-//        return unixtime;
-//        
-//    }
     
     /**
      * Assumes milliseconds from epoch: January 1, 1970, 00:00:00 GMT

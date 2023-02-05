@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.inmarsat.sdp.DBUtils.TimeUnits;
-import com.inmarsat.sdp.beans.UTInfoBean;
 import com.inmarsat.sdp.beans.AssetInfoBean;
 
 public class RecordConsumerThread implements Runnable, ExceptionListener {
@@ -49,7 +48,7 @@ public class RecordConsumerThread implements Runnable, ExceptionListener {
 
 		// Globals.URS_consume_only = false; // Option to reset from URS consume only state
 
-		String propsFilePath = "u2s.properties";
+		String propsFilePath = "sdp.properties";
 
 
 		Properties prop = new Properties();
@@ -107,25 +106,6 @@ public class RecordConsumerThread implements Runnable, ExceptionListener {
 					if (passwd == null)
 						passwd = "";
 
-					String str_BGAN_batch_size = prop.getProperty("BGAN_batch");
-					if (str_BGAN_batch_size != null) {
-						try {
-							RecordConsumer.BGAN_batch_size = Integer.parseInt(str_BGAN_batch_size);
-						} catch(NumberFormatException e) {
-							//not an int thus set default
-							RecordConsumer.BGAN_batch_size = RecordConsumer.batch_size_default;
-						}
-					}
-
-					String str_GX_batch_size = prop.getProperty("GX_batch");
-					if (str_GX_batch_size != null) {
-						try {
-							RecordConsumer.GX_batch_size = Integer.parseInt(str_GX_batch_size);
-						} catch(NumberFormatException e) {
-							//not an int thus set default
-							RecordConsumer.GX_batch_size = RecordConsumer.batch_size_default;
-						}
-					}
 
 					String str_inactivityMonitor = prop.getProperty("inactivityMonitor");
 					if (str_inactivityMonitor != null) {
@@ -137,18 +117,6 @@ public class RecordConsumerThread implements Runnable, ExceptionListener {
 						}
 					} else {
 						logger.error("Failed to find settings value for URS inactivity monitor. Using default of 60secs.");
-					}
-
-					String str_recoveryMonitor = prop.getProperty("recoveryMonitor");
-					if (str_recoveryMonitor != null) {
-						try {
-							Globals.SPB_recover_monitor= Integer.parseInt(str_recoveryMonitor);
-						} catch(NumberFormatException e) {
-							//not an int thus set default
-							logger.error("Invalid value for SPB recovery monitor. Using default of {}secs.", Globals.SPB_recover_monitor);
-						}
-					} else {
-						logger.error("Failed to find settings value for SPB recovery monitor. Using default of {}secs.", Globals.SPB_recover_monitor);
 					}
 
 					String rto = prop.getProperty("receiverTimeOut");
@@ -191,9 +159,9 @@ public class RecordConsumerThread implements Runnable, ExceptionListener {
 						}
 					}
 
-					String frd = prop.getProperty("frexitProcessDelta");
+					String frd = prop.getProperty("processDelta");
 					if(frd != null)
-						Globals.frexitProcessDelta=new Long(frd);
+						Globals.processDelta=new Long(frd);
 
 
 					String tgt = prop.getProperty("targetType");
@@ -272,7 +240,7 @@ public class RecordConsumerThread implements Runnable, ExceptionListener {
 					{
 						logger.debug("Received negative time error signal, ignoring message.");
 					}
-					else if (now - messageTime < Globals.frexitProcessDelta) {
+					else if (now - messageTime < Globals.processDelta) {
 						logger.debug("Processing FRExit_Actions");
 						if(processFRExitActions())
 							freActDone = true;
@@ -404,7 +372,6 @@ public class RecordConsumerThread implements Runnable, ExceptionListener {
 			logger.debug("Received message: {}", messageString);
 
 			SDPAssetRecordParser p = SDPAssetRecordParser.getParser();
-			UTInfoBean currUTInfo = null;
 			AssetInfoBean currAssetInfo = null;
 			try {
 				currAssetInfo = p.parseAsset(messageString);
@@ -430,70 +397,9 @@ public class RecordConsumerThread implements Runnable, ExceptionListener {
 		logger.error("JSM Exception Stack Trace: {}", Utils.getStackString(ex.getStackTrace()));
 	}
 	
-	private boolean PostToSPB(UTInfoBean currUTInfo) {
-		
-		PostToSPBTable actTable = PostToSPBTable.getTable();
-
-		boolean processCurrentUT = true;
-
-		// if entered URS consume only state, skip
-		if (Globals.URS_consume_only) {
-			processCurrentUT = false;
-			logger.debug("NOW is: {} FAIL is: {} Diff is: {} Monitor is: {}", System.currentTimeMillis(), Globals.URS_consume_only_time,
-					System.currentTimeMillis() - Globals.URS_consume_only_time,  Globals.SPB_recover_monitor);
-			if ( System.currentTimeMillis() - Globals.URS_consume_only_time > Globals.SPB_recover_monitor) {
-				logger.warn("Exiting URS consume only state. Re-attempting to post to SPBs.");
-				Globals.URS_consume_only = false;
-				Globals.URS_consume_only_time = 0L;
-				Globals.SPB_GX_failed = false;
-				Globals.SPB_BGAN_failed = false;
-				Globals.SPB_GX_failover = false;
-				Globals.SPB_BGAN_failover = false;
-
-				processCurrentUT = true;
-			}
-		}
-
-
-		if (processCurrentUT) {
-			if ( currUTInfo.getAccessnetwork() == Globals.accessNetBGAN ) {			
-				if (RecordConsumer.BGAN_message.size() < RecordConsumer.BGAN_batch_size - 1) {
-					RecordConsumer.BGAN_message.add(currUTInfo);
-					logger.debug("Added message to List. Current BGAN List size is: {}", RecordConsumer.BGAN_message.size());
-					return false;
-				} else {
-					RecordConsumer.BGAN_message.add(currUTInfo);
-					logger.debug("BGAN List size is:{} calling POST.", RecordConsumer.BGAN_message.size());
-					logger.debug("Current network is: {}", currUTInfo.getAccessnetwork());
-					actTable.Post(currUTInfo);
-					//empty BGAN_message
-					RecordConsumer.BGAN_message.clear();
-					return true;
-				}
-			}	else {
-				if (RecordConsumer.GX_message.size() < RecordConsumer.GX_batch_size - 1 ) {
-					RecordConsumer.GX_message.add(currUTInfo);
-					logger.debug("Added message to GX List. Current List size is: {}", RecordConsumer.GX_message.size());
-					return false;
-				} else {
-					RecordConsumer.GX_message.add(currUTInfo);
-					logger.debug("GX List size is: {}  calling POST.", RecordConsumer.GX_message.size() );
-					logger.debug("Current network is: {}", currUTInfo.getAccessnetwork());
-					actTable.Post(currUTInfo);
-					//empty GX_message
-					RecordConsumer.GX_message.clear();
-					return true;
-				}
-			}
-		} else {
-			return false;
-		}
-		
-	}
-
 	private boolean PostToOracle(AssetInfoBean currAssetInfo) {
 		
-		PostToSPBTable actTable = PostToSPBTable.getTable();
+		PostToOracleTable actTable = PostToOracleTable.getTable();
 
 					return actTable.ProcessAsset(currAssetInfo);
 	}

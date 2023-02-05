@@ -47,7 +47,7 @@ public class DBUtils {
 		Connection conn = null; PreparedStatement pstmt = null; 
 		int rows = 0;
 		try {
-			conn = DBConnectionFactory.getFRExitConnection();
+			conn = DBConnectionFactory.getOracleConnection();
 			pstmt = conn.prepareStatement(sql);
 			rows = pstmt.executeUpdate();
 			logger.debug("{} row(s) effected in UT_INFO: {}", rows, sql);

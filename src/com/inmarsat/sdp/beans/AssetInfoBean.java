@@ -56,7 +56,7 @@ private String ratePlan;
 private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
 /**
-* No args constructor for use in serialization
+* No arguments constructor for use in serialisation
 *
 */
 public AssetInfoBean() {

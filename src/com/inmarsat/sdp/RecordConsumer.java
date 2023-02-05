@@ -16,7 +16,6 @@ import org.apache.activemq.ActiveMQConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.inmarsat.sdp.beans.UTInfoBean;
 
 public class RecordConsumer {
 
@@ -32,9 +31,6 @@ public class RecordConsumer {
 	public static Long receiverMonitorLoop = new Long(10000);
 
 	
-	public static ArrayList<UTInfoBean> BGAN_message = new ArrayList<UTInfoBean> ();
-	public static ArrayList<UTInfoBean> GX_message = new ArrayList<UTInfoBean> ();
-
 	public final static int batch_size_default = 5;
 	public static int BGAN_batch_size = batch_size_default; // default values overwritten by properties file
 	public static int GX_batch_size = batch_size_default;
